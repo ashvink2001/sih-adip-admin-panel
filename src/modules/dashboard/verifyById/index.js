@@ -9,15 +9,32 @@ import SearchHeader from "components/searchHeader";
 const VerifyById = () => {
   const [verifyList, setVerifyList] = useState([]);
 
-  const onSearchSubmit = (searchTerm) => {
-    console.log(searchTerm);
-    // onValue(
-    //   ref(database, "verificationApplied/" + state + "/" + district + "/"),
-    //   (snapshot) => {
-    //     console.log(snapshot.val());
-    //     setVerifyList(snapshot.val());
-    //   }
-    // );
+  const onSearchSubmit = async (searchId) => {
+    var placeDetail = {
+      state: "",
+      district: "",
+    };
+    await onValue(ref(database, "userIdList/"), (snapshot) => {
+      let place = snapshot.val()[searchId];
+      if (place) {
+        placeDetail.state = place.state;
+        placeDetail.district = place.district;
+      }
+    });
+    if (placeDetail.district !== "" && placeDetail.state !== "") {
+      await onValue(
+        ref(
+          database,
+          "USERS/" + placeDetail.state + "/" + placeDetail.district + "/"
+        ),
+        (snapshot) => {
+          let value = snapshot.val()[searchId];
+          if (value !== undefined) {
+            setVerifyList([value]);
+          }
+        }
+      );
+    }
   };
   return (
     <div>

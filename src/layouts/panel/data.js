@@ -4,6 +4,7 @@ import {
   UserOutlined,
   DiffOutlined,
   PictureOutlined,
+  WechatOutlined,
 } from "@ant-design/icons";
 
 function getItem(label, key, icon, children) {
@@ -22,4 +23,5 @@ export const navData = [
     getItem("Search", "4", <FileSearchOutlined />),
   ]),
   getItem("News Update", "5", <DiffOutlined />),
+  getItem("Support Chat", "6", <WechatOutlined />),
 ];

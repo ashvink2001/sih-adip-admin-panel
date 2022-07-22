@@ -11,6 +11,7 @@ import Home from "modules/dashboard/home";
 import News from "modules/dashboard/news";
 import VerifyByPlace from "modules/dashboard/verifyByPlace";
 import VerifyById from "modules/dashboard/verifyById";
+import SupportChat from "modules/dashboard/supportChat";
 
 const Panel = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -23,6 +24,8 @@ const Panel = () => {
       return <VerifyById />;
     } else if (tab === "5") {
       return <News />;
+    } else if (tab === "6") {
+      return <SupportChat />;
     } else {
       return <Home />;
     }

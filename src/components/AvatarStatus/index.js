@@ -7,7 +7,10 @@ const renderAvatar = (props) => {
     <Avatar
       {...props}
       className={`ant-avatar-${props.type}`}
-      style={{ backgroundColor: "violet" }}
+      style={{
+        backgroundColor: "violet",
+        marginRight: ".6rem",
+      }}
     >
       {props.text}
     </Avatar>
@@ -18,7 +21,6 @@ export const AvatarStatus = (props) => {
   const {
     name,
     suffix,
-    subTitle,
     id,
     type,
     src,
@@ -46,7 +48,6 @@ export const AvatarStatus = (props) => {
           )}
           <span>{suffix}</span>
         </div>
-        <div className="text-muted avatar-status-subtitle">{subTitle}</div>
       </div>
     </div>
   );

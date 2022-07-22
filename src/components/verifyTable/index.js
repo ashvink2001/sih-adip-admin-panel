@@ -1,53 +1,69 @@
-import { Button, Table } from "antd";
+import { Button, Modal, Table } from "antd";
 import AvatarStatus from "components/AvatarStatus";
 import { UserAddOutlined } from "@ant-design/icons";
-import React from "react";
-
-const tableColumns = [
-  {
-    title: "Member",
-    dataIndex: "userData",
-    key: "name",
-    render: (data, record) => (
-      <div className="d-flex align-items-center">
-        <AvatarStatus
-          id={record._id}
-          text={utils.getNameInitial(data.name)}
-          name={data.name}
-          subTitle={record.role}
-          src={data.avatarUrl ? data.avatarUrl : ""}
-        />
-      </div>
-    ),
-  },
-  {
-    title: "Role",
-    key: "date",
-    render: (data) => <div className="d-flex align-items-center">{data}</div>,
-  },
-  {
-    title: "Ban",
-    key: "amount",
-    render: (data) => (
-      <div className="d-flex align-items-center">
-        <Button
-          icon={<UserAddOutlined />}
-          type="default"
-          size="small"
-          style={{
-            marginRight: ".8rem",
-            color: "#f0e130",
-            borderColor: "#f0e130",
-          }}
-        >
-          Ban
-        </Button>
-      </div>
-    ),
-  },
-];
+import React, { useState } from "react";
 
 const VerifyTable = ({ list }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const tableColumns = [
+    {
+      title: "Name",
+      key: "name",
+      render: (data) => (
+        <div className="d-flex align-items-center">
+          <AvatarStatus
+            id={data.udidNo}
+            name={data.name}
+            src={data.profileImageUrl ? data.profileImageUrl : ""}
+          />
+        </div>
+      ),
+    },
+    {
+      title: "UDID No",
+      key: "udidNo",
+      render: (data) => (
+        <div className="d-flex align-items-center">{data.udidNo}</div>
+      ),
+    },
+    {
+      title: "Date Of Birth",
+      key: "dob",
+      render: (data) => (
+        <div className="d-flex align-items-center">{data.dateOfBirth}</div>
+      ),
+    },
+    {
+      title: "Phone Number",
+      key: "phnumber",
+      render: (data) => (
+        <div className="d-flex align-items-center">{data.mobileNo}</div>
+      ),
+    },
+    {
+      title: "Action",
+      key: "check",
+      render: (data) => (
+        <div className="d-flex align-items-center">
+          <Button
+            icon={<UserAddOutlined />}
+            type="default"
+            size="small"
+            style={{
+              marginRight: ".8rem",
+              color: "#f0e130",
+              borderColor: "#f0e130",
+            }}
+            onClick={() => setModalVisible((prevState) => !prevState)}
+          >
+            Verify
+          </Button>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div>
       <Table
@@ -58,6 +74,18 @@ const VerifyTable = ({ list }) => {
         pagination={true}
         style={{ height: "20rem" }}
       />
+      <Modal
+        title="Verify the Document"
+        centered
+        visible={modalVisible}
+        onOk={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+        width={1000}
+      >
+        <p>some contents...</p>
+        <p>some contents...</p>
+        <p>some contents...</p>
+      </Modal>
     </div>
   );
 };

@@ -668,7 +668,7 @@ export const detail = {
       districts: ["East Sikkim", "North Sikkim", "South Sikkim", "West Sikkim"],
     },
     {
-      state: "Tamilnadu",
+      state: "Tamil Nadu",
       districts: [
         "Ariyalur",
         "Chennai",
