@@ -2,17 +2,17 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
+import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA_EqYyS3-MNv4aLf5x7VlhVQtYv_s0ryA",
-  authDomain: "adminpanel-6b481.firebaseapp.com",
-  projectId: "adminpanel-6b481",
-  storageBucket: "adminpanel-6b481.appspot.com",
-  messagingSenderId: "380673082129",
-  appId: "1:380673082129:web:afbd695d66b92accdc82b0",
-  measurementId: "G-PKWNPHBQ6Z",
-  databaseURL:
-    "https://adminpanel-6b481-default-rtdb.asia-southeast1.firebasedatabase.app",
+  apiKey: "AIzaSyAdVrNSjHGuPLeADPOJwOoohEXZIC3nhos",
+  authDomain: "adip-78b9c.firebaseapp.com",
+  databaseURL: "https://adip-78b9c-default-rtdb.firebaseio.com",
+  projectId: "adip-78b9c",
+  storageBucket: "adip-78b9c.appspot.com",
+  messagingSenderId: "25385403487",
+  appId: "1:25385403487:web:8cd37f28a8fd1aba8147ea",
+  measurementId: "G-X306PZYKXZ",
 };
 
 // Initialize Firebase
@@ -21,3 +21,5 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 export const database = getDatabase(app);
+
+// export const getMessage = getMessaging(app);

@@ -32,7 +32,7 @@ const Login = (props) => {
                   />
                   <p>
                     Dont have an account yet?{" "}
-                    <Link href="/auth/register">Sign Up</Link>
+                    <Link href="/register">Sign Up</Link>
                   </p>
                 </div>
                 <Row justify="center">

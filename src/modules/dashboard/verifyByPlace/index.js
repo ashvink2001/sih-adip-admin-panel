@@ -16,7 +16,7 @@ const VerifyByPlace = () => {
       (snapshot) => {
         let value = snapshot.val();
         if (value) {
-          userIdList = snapshot.val();
+          userIdList = Object.keys(snapshot.val());
         }
       }
     );
@@ -26,7 +26,7 @@ const VerifyByPlace = () => {
         (snapshot) => {
           const arr = [];
           userIdList.map((id) => {
-            arr.push(snapshot.val()[id]);
+            arr.push({ ...snapshot.val()[id], userId: id });
           });
           console.log(arr);
           setVerifyList(arr);
