@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import ChatData from "assets/data/chat.data.json";
+// import ChatData from "assets/data/chat.data.json";
 import { Badge, Input } from "antd";
 import AvatarStatus from "components/AvatarStatus";
 import { COLOR_1 } from "constants/ChartConstant";
 import { SearchOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
+//removed usehistory
 
 const ChatMenu = ({ match, location }) => {
   const [list, setList] = useState(ChatData);

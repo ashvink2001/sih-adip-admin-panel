@@ -43,7 +43,6 @@ const VerificationForm = ({
 
   const [status, setStatus] = useState("");
   const [remark, setRemark] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
     if (status === "notApproved" && remark.length !== 0) {
@@ -79,16 +78,28 @@ const VerificationForm = ({
         </Col>
         <Col style={{ display: "flex", flexDirection: "column", gap: 30 }}>
           <Col>Date Of Birth : {userData.dateOfBirth}</Col>
-          <Col>Applied On : {userData.requestStatus.appliedOnTimeStamp}</Col>
+          <Col>
+            Applied On :{" "}
+            {new Date(userData.requestStatus.appliedOnTimeStamp).toDateString()}
+          </Col>
           <Col>Phone No : {userData.mobileNo}</Col>
           <Col>UD-ID No : {userData.udidNo}</Col>
+        </Col>
+        <Col style={{ display: "flex", flexDirection: "column", gap: 30 }}>
+          <Col>
+            AidsReceived : {userData.requestStatus.aidsReceived.toString()}
+          </Col>
+          <Col>Verified : {userData.requestStatus.verified.toString()}</Col>
+          <Col>
+            Not Appropriate : {userData.requestStatus.notAppropriate.toString()}
+          </Col>
         </Col>
       </Row>
       <div style={{ fontSize: "1.4rem", margin: "3rem 0rem 2.5rem 0rem" }}>
         Requested Equipments Details
       </div>
       <Row align="middle" justify="space-around">
-        {userData?.requestStatus?.aidsList.map((aid) => (
+        {userData?.requestStatus?.aidsList?.map((aid) => (
           <Col key={aid} span={6}>
             {aid}
           </Col>
@@ -205,7 +216,7 @@ const VerificationForm = ({
             <label style={{ marginRight: ".6rem" }}>Select Status : </label>
             <TextArea
               style={{ width: "80%" }}
-              value={remark}
+              value={userData.requestStatus?.message || remark}
               onChange={(e) => setRemark(e.target.value)}
               placeholder="Enter Remarks"
               rows={4}

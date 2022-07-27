@@ -26,9 +26,14 @@ const VerifyByPlace = () => {
         (snapshot) => {
           const arr = [];
           userIdList.map((id) => {
-            arr.push({ ...snapshot.val()[id], userId: id });
+            let value = snapshot.val()[id];
+            if (
+              !value.requestStatus.verified &&
+              !value.requestStatus.notAppropriate
+            ) {
+              arr.push({ ...snapshot.val()[id], userId: id });
+            }
           });
-          console.log(arr);
           setVerifyList(arr);
         }
       );

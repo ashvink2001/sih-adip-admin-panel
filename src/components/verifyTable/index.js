@@ -4,7 +4,7 @@ import { UserAddOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import VerificationForm from "components/VerificationForm";
 import { database } from "firebaseConfig/config";
-import { ref, set, update } from "firebase/database";
+import { ref, remove, set, update } from "firebase/database";
 
 const VerifyTable = ({ list }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,17 +38,30 @@ const VerifyTable = ({ list }) => {
         district: district,
         state: state,
         userId: userId,
+        fcmToken: fcmToken,
       }
     );
+
     //creating verificationList
     await set(ref(database, "verificationList/" + userId), {
       udid: udidNo,
+    });
+
+    //removed from verificationApplied
+    remove(
+      ref(
+        database,
+        "verificationApplied/" + state + "/" + district + "/" + userId
+      )
+    ).catch((err) => {
+      console.log(err);
     });
 
     //set notification
 
     // await getMessage().subscribeToTopic(fcmToken,"Request Verified").then
   };
+
   const handleNotApproved = async (message) => {
     const { state, district, userId } = selectedUser;
 
@@ -99,9 +112,7 @@ const VerifyTable = ({ list }) => {
       render: (data) => {
         return (
           <div className="d-flex align-items-center">
-            {new Date(
-              data.requestStatus.appliedOnTimeStamp * 1000
-            ).toDateString()}
+            {new Date(data.requestStatus.appliedOnTimeStamp).toDateString()}
           </div>
         );
       },

@@ -14,11 +14,14 @@ const VerifyById = () => {
       state: "",
       district: "",
     };
-    await onValue(ref(database, "userIdList/"), (snapshot) => {
+    await onValue(ref(database, "udidNoList/"), (snapshot) => {
       let place = snapshot.val()[searchId];
       if (place) {
         placeDetail.state = place.state;
         placeDetail.district = place.district;
+        placeDetail.userId = place.userId;
+      } else {
+        setVerifyList([]);
       }
     });
     if (placeDetail.district !== "" && placeDetail.state !== "") {
@@ -28,7 +31,7 @@ const VerifyById = () => {
           "USERS/" + placeDetail.state + "/" + placeDetail.district + "/"
         ),
         (snapshot) => {
-          let value = snapshot.val()[searchId];
+          let value = snapshot.val()[placeDetail.userId];
           if (value !== undefined) {
             setVerifyList([value]);
           }
