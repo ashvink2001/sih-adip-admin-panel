@@ -1,6 +1,5 @@
 import {
   AUTHENTICATED,
-  SIGNOUT,
   SIGNOUT_SUCCESS,
   SHOW_AUTH_MESSAGE,
   HIDE_AUTH_MESSAGE,
@@ -12,12 +11,6 @@ export const authenticated = (token) => {
   return {
     type: AUTHENTICATED,
     token,
-  };
-};
-
-export const signOut = () => {
-  return {
-    type: SIGNOUT,
   };
 };
 

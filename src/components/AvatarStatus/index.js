@@ -30,6 +30,7 @@ export const AvatarStatus = (props) => {
     gap,
     text,
     onNameClick,
+    subTitle,
   } = props;
   return (
     <div className="avatar-status d-flex align-items-center">
@@ -48,6 +49,9 @@ export const AvatarStatus = (props) => {
           )}
           <span>{suffix}</span>
         </div>
+        {subTitle && (
+          <div className="text-muted avatar-status-subtitle">{subTitle}</div>
+        )}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import {
 import { useRouter } from "next/router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebaseConfig/config";
+import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
 
 export const LoginForm = (props) => {
   const router = useRouter();
@@ -35,6 +36,14 @@ export const LoginForm = (props) => {
 
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then((res) => {
+        if (typeof window != "undefined") {
+          localStorage.setItem(AUTH_TOKEN, res.user.uid);
+
+          //expiryDate
+          var date = new Date();
+          date.setDate(date.getDate() + 1); // add a day
+          localStorage.setItem(EXPIRY_DATE, date);
+        }
         authenticated(res.user.uid);
       })
       .catch((err) => {

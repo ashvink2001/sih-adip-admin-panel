@@ -1,8 +1,12 @@
-// import Chat from "components/chat";
+import Chat from "components/chat";
 import React from "react";
 
 const SupportChat = () => {
-  return <div></div>;
+  return (
+    <div>
+      <Chat />
+    </div>
+  );
 };
 
 export default SupportChat;

@@ -40,7 +40,7 @@ const VerifyById = () => {
     }
   };
   return (
-    <div>
+    <div style={{ marginTop: "1rem" }}>
       <Card title="Need To Verify" style={{ height: "90%", width: "100%" }}>
         <SearchHeader onSearchSubmit={onSearchSubmit} />
         <VerifyTable list={verifyList} />

@@ -31,7 +31,7 @@ const Register = (props) => {
                     height="60rem"
                   />
                   <p className="text-muted">
-                    Back to Login : <Link href="/auth/login"> Sign in ?</Link>
+                    Back to Login : <Link href="/login"> Sign in ?</Link>
                   </p>
                 </div>
                 <Row justify="center">

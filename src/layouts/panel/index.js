@@ -1,6 +1,8 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
+
+import { signOutSuccess } from "redux/actions/Auth";
 
 //local
 const { Header, Content, Footer, Sider } = Layout;
@@ -12,8 +14,9 @@ import News from "modules/dashboard/news";
 import VerifyByPlace from "modules/dashboard/verifyByPlace";
 import VerifyById from "modules/dashboard/verifyById";
 import SupportChat from "modules/dashboard/supportChat";
+import { connect } from "react-redux";
 
-const Panel = () => {
+const Panel = ({ signOutSuccess }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [currentTab, setCurrentTab] = useState("1");
 
@@ -38,7 +41,8 @@ const Panel = () => {
       }}
     >
       <Sider
-        theme="dark"
+        style={{ boxShadow: "10px -3px 47px -13px rgba(0,0,0,0.1)" }}
+        theme="light"
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
@@ -48,7 +52,7 @@ const Panel = () => {
         </div>
 
         <Menu
-          theme="dark"
+          theme="light"
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={navData}
@@ -60,9 +64,20 @@ const Panel = () => {
           className="site-layout-background"
           style={{
             padding: 0,
-            backgroundColor: "black",
+            boxShadow: "10px -3px 47px -13px rgba(0,0,0,0.3)",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
           }}
-        />
+        >
+          <Button
+            style={{ marginRight: "2rem" }}
+            type="primary"
+            onClick={() => signOutSuccess()}
+          >
+            Signout
+          </Button>
+        </Header>
         <Content
           style={{
             margin: "0 16px",
@@ -75,11 +90,11 @@ const Panel = () => {
             textAlign: "center",
           }}
         >
-          E-help ©2022 Created by Ajay
+          ADIP Dashboard ©2022
         </Footer>
       </Layout>
     </Layout>
   );
 };
 
-export default Panel;
+export default connect(null, { signOutSuccess })(Panel);

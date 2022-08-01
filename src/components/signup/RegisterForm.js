@@ -10,10 +10,10 @@ import {
   signUpSuccess,
 } from "redux/actions/Auth";
 import { useRouter } from "next/router";
-import { ref, set, child } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, database } from "firebaseConfig/config";
-import { AUTH_TOKEN } from "redux/constants/Auth";
+import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
 
 const rules = {
   name: [
@@ -98,6 +98,11 @@ export const RegisterForm = (props) => {
           .then((res) => {
             if (typeof window != "undefined") {
               localStorage.setItem(AUTH_TOKEN, res.user.uid);
+
+              //expiryDate
+              var date = new Date();
+              date.setDate(date.getDate() + 1); // add a day
+              localStorage.setItem(EXPIRY_DATE, date);
             }
             addUserData(res.user.uid, email, name);
           })

@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import Card from "antd/lib/card/Card";
-import { push, ref, set } from "firebase/database";
+import { push, ref } from "firebase/database";
 import { database } from "firebaseConfig/config";
 import React from "react";
 
