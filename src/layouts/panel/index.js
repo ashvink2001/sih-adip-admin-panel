@@ -15,10 +15,17 @@ import VerifyByPlace from "modules/dashboard/verifyByPlace";
 import VerifyById from "modules/dashboard/verifyById";
 import SupportChat from "modules/dashboard/supportChat";
 import { connect } from "react-redux";
+import { useRouter } from "next/router";
 
 const Panel = ({ signOutSuccess }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [currentTab, setCurrentTab] = useState("1");
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    signOutSuccess();
+    router.push("/login");
+  };
 
   const renderContent = (tab) => {
     if (tab === "3") {
@@ -73,7 +80,7 @@ const Panel = ({ signOutSuccess }) => {
           <Button
             style={{ marginRight: "2rem" }}
             type="primary"
-            onClick={() => signOutSuccess()}
+            onClick={() => handleSignOut()}
           >
             Signout
           </Button>

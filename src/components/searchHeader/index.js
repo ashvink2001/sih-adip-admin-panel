@@ -15,7 +15,7 @@ const SearchHeader = ({ onSearchSubmit }) => {
       <Input
         type="text"
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="enter User Id"
+        placeholder="enter UDID"
         style={{ width: "60rem", marginRight: "2rem" }}
         size="large"
       />

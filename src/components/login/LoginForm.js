@@ -13,7 +13,6 @@ import { useRouter } from "next/router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebaseConfig/config";
 import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
-import Link from "next/link";
 
 export const LoginForm = (props) => {
   const router = useRouter();
