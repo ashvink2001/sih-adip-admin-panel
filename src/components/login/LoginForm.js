@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "firebaseConfig/config";
 import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
+import Link from "next/link";
 
 export const LoginForm = (props) => {
   const router = useRouter();
@@ -120,9 +121,6 @@ export const LoginForm = (props) => {
         >
           <Input.Password prefix={<LockOutlined className="text-primary" />} />
         </Form.Item>
-        <p style={{ marginTop: "-1rem" }}>
-          <a href="/auth/forgot-password">Forgot Password ?</a>
-        </p>
         <Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}>
             Sign In
