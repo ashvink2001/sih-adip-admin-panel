@@ -1,32 +1,32 @@
 export const chatData = {
-  message: [
-    {
-      userId: "asdfasdf",
-      uidNo: "asdfasd",
+  supportChat: {
+    "asdfasdf-userId": {
+      userId: "asdfasdf-userId",
+      udidNo: "asdfasd",
       userName: "admin",
       profileImageUrl: "",
-      message: [
-        {
-          timestamp: "asdfasdf",
+      message: {
+        "asdf-randomString": {
+          timestamp: 23452345,
           messagerName: "asdfasd",
           messagerID: "",
           content: "my first message",
         },
-      ],
+      },
     },
-    {
-      userId: "asdfasdf2",
-      uidNo: "asdfasd2",
+    "asdfas-userId": {
+      userId: "asdfas-userId",
+      udidNo: "asdfasd2",
       userName: "admin2",
       profileImageUrl: "",
-      message: [
-        {
-          timestamp: "asdfasdf",
+      message: {
+        "asdf-randomString": {
+          timestamp: 3452345234,
           messagerName: "asdfasd",
           messagerID: "",
           content: "my second message",
         },
-      ],
+      },
     },
-  ],
+  },
 };

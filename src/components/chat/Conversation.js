@@ -1,5 +1,5 @@
 import React from "react";
-import ChatData from "assets/data/chat.data.json";
+import { chatData } from "utils/stateData/chatData";
 import { Avatar, Divider, Input, Form, Button, Menu } from "antd";
 import {
   FileOutlined,
@@ -11,10 +11,11 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import { Scrollbars } from "react-custom-scrollbars";
-import Flex from "components/shared-components/Flex";
-import EllipsisDropdown from "components/shared-components/EllipsisDropdown";
+import Flex from "components/Flex";
+import EllipsisDropdown from "components/EllipsisDropdown";
 import Image from "next/image";
 import Link from "next/link";
+import AvatarStatus from "components/AvatarStatus";
 
 const menu = () => (
   <Menu>
@@ -44,48 +45,49 @@ export class Conversation extends React.Component {
   };
 
   componentDidMount() {
-    this.getConversation(this.getUserId());
+    const id = this.props.messageId;
+    this.getConversation(id);
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location.pathname !== prevProps.location.pathname) {
-      this.getConversation(this.getUserId());
-    }
-    this.scrollToBottom();
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.location.pathname !== prevProps.location.pathname) {
+  //     this.getConversation(this.getUserId());
+  //   }
+  //   this.scrollToBottom();
+  // }
 
-  getUserId() {
-    const { id } = this.props.match.params;
-    return parseInt(parseInt(id));
-  }
+  // getUserId() {
+  //   const { id } = this.props.match.params;
+  //   return parseInt(parseInt(id));
+  // }
 
   getConversation = (currentId) => {
-    const data = ChatData.filter((elm) => elm.id === currentId);
+    const data = chatData.supportChat[currentId];
     this.setState({
-      info: data[0],
-      msgList: data[0].msg,
+      info: data,
+      msgList: Object.values(data?.message) || [],
     });
   };
 
-  getMsgType = (obj) => {
-    switch (obj.msgType) {
-      case "text":
-        return <span>{obj.text}</span>;
-      case "image":
-        return <Image src={obj.text} alt={obj.text} />;
-      case "file":
-        return (
-          <Flex alignItems="center" className="msg-file">
-            <FileOutlined className="font-size-md" />
-            <span className="ml-2 font-weight-semibold text-link pointer">
-              <u>{obj.text}</u>
-            </span>
-          </Flex>
-        );
-      default:
-        return null;
-    }
-  };
+  // getMsgType = (obj) => {
+  //   switch (obj.msgType) {
+  //     case "text":
+  //       return <span>{obj.text}</span>;
+  //     case "image":
+  //       return <Image src={obj.text} alt={obj.text} />;
+  //     case "file":
+  //       return (
+  //         <Flex alignItems="center" className="msg-file">
+  //           <FileOutlined className="font-size-md" />
+  //           <span className="ml-2 font-weight-semibold text-link pointer">
+  //             <u>{obj.text}</u>
+  //           </span>
+  //         </Flex>
+  //       );
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   scrollToBottom = () => {
     this.chatBodyRef.current.scrollToBottom();
@@ -128,25 +130,20 @@ export class Conversation extends React.Component {
         {props.map((elm, i) => (
           <div
             key={`msg-${id}-${i}`}
-            className={`msg ${elm.msgType === "date" ? "datetime" : ""} ${
-              elm.from === "opposite"
-                ? "msg-recipient"
-                : elm.from === "me"
-                ? "msg-sent"
-                : ""
-            }`}
+            className={`msg  ${
+              elm.userId === id ? "msg-sent" : "msg-recipient"
+            }`} //${elm.msgType === "date" ? "datetime" : ""}
           >
-            {elm.avatar ? (
-              <div className="mr-2">
-                <Avatar src={elm.avatar} />
-              </div>
-            ) : null}
-            {elm.text ? (
-              <div className={`bubble ${!elm.avatar ? "ml-5" : ""}`}>
-                <div className="bubble-wrapper">{this.getMsgType(elm)}</div>
-              </div>
-            ) : null}
-            {elm.msgType === "date" ? <Divider>{elm.time}</Divider> : null}
+            <div className="mr-2">
+              <AvatarStatus name="dd" />
+            </div>
+
+            <div className={`bubble ml-5`}>
+              {/* ${!elm.avatar ? "ml-5" : ""} */}
+              <div className="bubble-wrapper">{elm.content}</div>
+            </div>
+
+            {/* {elm.msgType === "date" ? <Divider>{elm.time}</Divider> : null} */}
           </div>
         ))}
       </Scrollbars>
@@ -167,29 +164,30 @@ export class Conversation extends React.Component {
             placeholder="Type a message..."
             suffix={
               <div className="d-flex align-items-center">
-                <Link
-                  href="/#"
+                {/* <Button
+                  type="link"
+                  size="large"
                   className="text-dark font-size-lg mr-3"
                   onClick={this.emptyClick}
-                >
-                  <SmileOutlined />
-                </Link>
-                <Link
-                  href="/#"
+                  icon={<SmileOutlined />}
+                /> */}
+                {/* 
+                <Button
+                  type="link"
+                  size="large"
                   className="text-dark font-size-lg mr-3"
                   onClick={this.emptyClick}
-                >
-                  <PaperClipOutlined />
-                </Link>
+                  icon={<PaperClipOutlined />}
+                /> */}
+
                 <Button
                   shape="circle"
                   type="primary"
                   size="small"
                   onClick={this.onSend}
                   htmlType="submit"
-                >
-                  <SendOutlined />
-                </Button>
+                  icon={<SendOutlined />}
+                />
               </div>
             }
           />
@@ -199,11 +197,11 @@ export class Conversation extends React.Component {
   );
 
   render() {
-    const { id } = this.props.match.params;
+    const id = this.props.messageId;
     const { info, msgList } = this.state;
     return (
       <div className="chat-content">
-        {this.chatContentHeader(info.name)}
+        {this.chatContentHeader(info.userName)}
         {this.chatContentBody(msgList, id)}
         {this.chatContentFooter()}
       </div>

@@ -8,26 +8,52 @@ import { connect } from "react-redux";
 //removed usehistory
 
 const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
-  const [list, setList] = useState(chatData.message);
+  const [list, setList] = useState(Object.values(chatData.supportChat));
 
   const openChat = (id) => {
-    console.log(id);
-    // const data = list.map((elm) => {
+    //console.log(id);
+    // const data = list.map((elm) => {  unread message feature
     //   if (elm.id === id) {
     //     elm.unread = 0;
     //   }
     //   return elm;
     // });
     // setList(data);
-    // updateCurrentMessageId(id)
+    updateCurrentMessageId(id);
   };
 
   const searchOnChange = (e) => {
     const query = e.target.value;
-    const data = ChatData.filter((item) => {
-      return query === "" ? item : item.userName.toLowerCase().includes(query);
-    });
-    setList(data);
+
+    // const data = list.filter((item) => {
+    //   if (query != "") {
+    //     console.log(
+    //       item.userName.toLowerCase().search(query).length > 0 ||
+    //         item.udidNo.toString().includes(query)
+    //     );
+    //     return (
+    //       item.userName.toLowerCase().includes(query) ||
+    //       item.udidNo.toString().includes(query)
+    //     );
+    //   }
+    // });
+    // setList(data);
+  };
+
+  const prevTime = (item) => {
+    const messages = Object.values(item.message);
+
+    return messages.length > 1
+      ? messages[messages.length - 1].timestamp
+      : messages[0].timestamp;
+  };
+
+  const prevText = (item) => {
+    const messages = Object.values(item.message);
+
+    return messages.length > 1
+      ? messages[messages.length - 1].content
+      : messages[0].content;
   };
 
   return (
@@ -42,24 +68,21 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
       <div className="chat-menu-list">
         {list.map((item, i) => (
           <div
-            key={`chat-item-${item.uidNo}`}
-            onClick={() => openChat(item.uidNo)}
+            key={`chat-item-${item.userId}`}
+            onClick={() => openChat(item.userId)}
             className={`chat-menu-list-item ${
               i === list.length - 1 ? "last" : ""
             } 
-            `} //${item.uidNo === uidNo ? "selected" : ""}
+            ${item.userId === currentMessageId ? "selected" : ""}
+            `}
           >
             <AvatarStatus
               text={item.userName.charAt(0).toUpperCase()}
               name={item.userName}
-              subTitle={
-                item.message.length > 1
-                  ? item.message[item.message.length - 1].content
-                  : item.message[0].content
-              }
+              subTitle={prevText(item)}
             />
             <div className="text-right">
-              <div className="chat-menu-list-item-time">{23452345}</div>
+              <div className="chat-menu-list-item-time">{prevTime(item)}</div>
               {/* {item.unread === 0 ? (
                 <span></span>
               ) : (
