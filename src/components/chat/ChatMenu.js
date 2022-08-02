@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { chatData } from "utils/stateData/chatData";
+import React, { useEffect, useState } from "react";
 import { Badge, Input } from "antd";
 import AvatarStatus from "components/AvatarStatus";
 import { updateCurrentMessageId } from "redux/actions/Message";
 import { SearchOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
+import { onValue, ref } from "firebase/database";
+import { database } from "firebaseConfig/config";
 //removed usehistory
 
 const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
-  const [list, setList] = useState(Object.values(chatData.supportChat));
+  const [list, setList] = useState([]);
 
   const openChat = (id) => {
     //console.log(id);
@@ -21,6 +22,16 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
     // setList(data);
     updateCurrentMessageId(id);
   };
+
+  const fetchMessageData = () => {
+    onValue(ref(database, "supportChat"), (snapshot) => {
+      setList(Object.values(snapshot.val()));
+    });
+  };
+
+  useEffect(() => {
+    fetchMessageData();
+  }, []);
 
   const searchOnChange = (e) => {
     const query = e.target.value;
@@ -78,6 +89,7 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
           >
             <AvatarStatus
               text={item.userName.charAt(0).toUpperCase()}
+              src={item.profileImageUrl}
               name={item.userName}
               subTitle={prevText(item)}
             />

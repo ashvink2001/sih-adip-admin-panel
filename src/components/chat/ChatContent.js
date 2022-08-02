@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import { useSelector } from "react-redux";
-import Conversation from "./Conversation";
 import Bg from "images/chatBg.png";
+import ChatConversation from "./ChatConversation";
 
 const ConversationEmpty = () => (
   <div className="chat-content-empty">
@@ -15,13 +15,12 @@ const ConversationEmpty = () => (
 
 const ChatContent = () => {
   const { currentMessageId } = useSelector((state) => state.message);
-  console.log(currentMessageId);
+  const { token } = useSelector((state) => state.auth);
   return currentMessageId ? (
-    <Conversation messageId={currentMessageId} />
+    <ChatConversation messageId={currentMessageId} adminId={token} />
   ) : (
     <ConversationEmpty />
   );
-  // return <ConversationEmpty />;
 };
 
 export default ChatContent;
