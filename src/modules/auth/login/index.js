@@ -27,8 +27,8 @@ const Login = (props) => {
                     className="img-fluid"
                     src={LOGO}
                     alt=""
-                    width="130rem"
-                    height="60rem"
+                    width="200rem"
+                    height="70rem"
                   />
                   <p>
                     Dont have an account yet?{" "}

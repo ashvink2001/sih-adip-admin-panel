@@ -55,7 +55,7 @@ const Panel = ({ signOutSuccess }) => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div>
-          <Image src={Logo} width="100%" height="80%" alt="logo" />
+          <Image src={Logo} width="180%" height="80%" alt="logo" />
         </div>
 
         <Menu
