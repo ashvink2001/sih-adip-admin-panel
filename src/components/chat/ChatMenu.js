@@ -6,13 +6,12 @@ import { SearchOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { onValue, ref } from "firebase/database";
 import { database } from "firebaseConfig/config";
-//removed usehistory
 
 const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
   const [list, setList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
 
   const openChat = (id) => {
-    //console.log(id);
     // const data = list.map((elm) => {  unread message feature
     //   if (elm.id === id) {
     //     elm.unread = 0;
@@ -26,6 +25,7 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
   const fetchMessageData = () => {
     onValue(ref(database, "supportChat"), (snapshot) => {
       setList(Object.values(snapshot.val()));
+      setFilteredList(Object.values(snapshot.val()));
     });
   };
 
@@ -35,28 +35,31 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
 
   const searchOnChange = (e) => {
     const query = e.target.value;
-
-    // const data = list.filter((item) => {
-    //   if (query != "") {
-    //     console.log(
-    //       item.userName.toLowerCase().search(query).length > 0 ||
-    //         item.udidNo.toString().includes(query)
-    //     );
-    //     return (
-    //       item.userName.toLowerCase().includes(query) ||
-    //       item.udidNo.toString().includes(query)
-    //     );
-    //   }
-    // });
-    // setList(data);
+    let data = [];
+    if (query !== "") {
+      data = list.filter((item) => {
+        return (
+          item.udidNo.toString().includes(query) ||
+          item.userName.includes(query)
+        );
+      });
+    } else {
+      data = list;
+    }
+    setFilteredList(data);
   };
 
   const prevTime = (item) => {
     const messages = Object.values(item.message);
 
-    return messages.length > 1
-      ? messages[messages.length - 1].timestamp
-      : messages[0].timestamp;
+    let timestamp =
+      messages.length > 1
+        ? messages[messages.length - 1].timestamp
+        : messages[0].timestamp;
+    return new Date(timestamp).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const prevText = (item) => {
@@ -71,13 +74,13 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
     <div className="chat-menu">
       <div className="chat-menu-toolbar">
         <Input
-          placeholder="Search"
+          placeholder="Search by UDID no or Name"
           onChange={searchOnChange}
           prefix={<SearchOutlined className="font-size-lg mr-2" />}
         />
       </div>
       <div className="chat-menu-list">
-        {list.map((item, i) => (
+        {filteredList.map((item, i) => (
           <div
             key={`chat-item-${item.userId}`}
             onClick={() => openChat(item.userId)}

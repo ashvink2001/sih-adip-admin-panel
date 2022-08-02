@@ -125,7 +125,10 @@ const ChatConversation = ({ messageId, adminId }) => {
                     textAlign: "end",
                   }}
                 >
-                  {new Date(elm.timestamp).toLocaleTimeString()}
+                  {new Date(elm.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </div>
               </div>
             </div>

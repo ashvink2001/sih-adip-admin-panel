@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>E-Help Admin Panel</title>
+        <title>ADIP Admin Panel</title>
         <meta name="description" content="admin panel for e-help platform " />
       </Head>
     </div>
