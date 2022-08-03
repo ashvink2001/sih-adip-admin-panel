@@ -32,8 +32,12 @@ const VerifyById = () => {
         ),
         (snapshot) => {
           let value = snapshot.val()[placeDetail.userId];
-          if (value !== undefined) {
-            setVerifyList([value]);
+          if (
+            value !== undefined &&
+            !value.requestStatus.verified &&
+            !value.requestStatus.notAppropriate
+          ) {
+            setVerifyList([{ ...value, userId: placeDetail.userId }]);
           }
         }
       );

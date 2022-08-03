@@ -48,6 +48,7 @@ const StaticsWidget = () => {
     });
     setStaticsData(tempData);
   };
+
   useEffect(() => {
     fetchData();
   }, []);
