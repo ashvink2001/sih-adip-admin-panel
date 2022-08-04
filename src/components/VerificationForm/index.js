@@ -87,11 +87,18 @@ const VerificationForm = ({
         </Col>
         <Col style={{ display: "flex", flexDirection: "column", gap: 30 }}>
           <Col>
-            AidsReceived : {userData.requestStatus.aidsReceived.toString()}
+            AidsReceived :{" "}
+            {userData.requestStatus.aidsReceived
+              ? "Received"
+              : "Not Yet Received"}
           </Col>
-          <Col>Verified : {userData.requestStatus.verified.toString()}</Col>
           <Col>
-            Not Appropriate : {userData.requestStatus.notAppropriate.toString()}
+            Verified :{" "}
+            {userData.requestStatus.verified ? "Verified" : "Not Yet Verified"}
+          </Col>
+          <Col>
+            Not Appropriate :{" "}
+            {userData.requestStatus.notAppropriate ? "Yes" : "No"}
           </Col>
         </Col>
       </Row>

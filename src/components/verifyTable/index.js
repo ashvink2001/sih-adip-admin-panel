@@ -6,7 +6,7 @@ import VerificationForm from "components/VerificationForm";
 import { database } from "firebaseConfig/config";
 import { ref, remove, set, update } from "firebase/database";
 
-const VerifyTable = ({ list }) => {
+const VerifyTable = ({ list, loadingStatus }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
 
@@ -152,6 +152,7 @@ const VerifyTable = ({ list }) => {
         rowKey="udidNo"
         pagination={true}
         style={{ height: "20rem" }}
+        loading={loadingStatus}
       />
       <Modal
         title="Verify the Document"

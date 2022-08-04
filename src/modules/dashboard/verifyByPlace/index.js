@@ -8,8 +8,10 @@ import { database } from "firebaseConfig/config";
 
 const VerifyByPlace = () => {
   const [verifyList, setVerifyList] = useState([]);
+  const [loadingData, setLoadingData] = useState(false);
 
   const onSearchSubmit = async (state, district) => {
+    setLoadingData(true);
     var userIdList = [];
     await onValue(
       ref(database, "verificationApplied/" + state + "/" + district + "/"),
@@ -35,8 +37,11 @@ const VerifyByPlace = () => {
             }
           });
           setVerifyList(arr);
+          setLoadingData(false);
         }
       );
+    } else {
+      setLoadingData(false);
     }
   };
   return (
@@ -50,7 +55,7 @@ const VerifyByPlace = () => {
         </div>
 
         <div style={{ marginTop: "2rem" }}>
-          <VerifyTable list={verifyList} />
+          <VerifyTable list={verifyList} loadingStatus={loadingData} />
         </div>
       </Card>
     </div>

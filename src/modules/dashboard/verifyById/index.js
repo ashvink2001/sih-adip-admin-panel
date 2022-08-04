@@ -8,8 +8,10 @@ import SearchHeader from "components/searchHeader";
 
 const VerifyById = () => {
   const [verifyList, setVerifyList] = useState([]);
+  const [loadingData, setLoadingData] = useState(false);
 
   const onSearchSubmit = async (searchId) => {
+    setLoadingData(true);
     var placeDetail = {
       state: "",
       district: "",
@@ -22,6 +24,7 @@ const VerifyById = () => {
         placeDetail.userId = place.userId;
       } else {
         setVerifyList([]);
+        setLoadingData(false);
       }
     });
     if (placeDetail.district !== "" && placeDetail.state !== "") {
@@ -38,6 +41,7 @@ const VerifyById = () => {
             !value.requestStatus.notAppropriate
           ) {
             setVerifyList([{ ...value, userId: placeDetail.userId }]);
+            setLoadingData(false);
           }
         }
       );
@@ -47,7 +51,7 @@ const VerifyById = () => {
     <div style={{ marginTop: "1rem" }}>
       <Card title="Need To Verify" style={{ height: "90%", width: "100%" }}>
         <SearchHeader onSearchSubmit={onSearchSubmit} />
-        <VerifyTable list={verifyList} />
+        <VerifyTable list={verifyList} loadingStatus={loadingData} />
       </Card>
     </div>
   );
