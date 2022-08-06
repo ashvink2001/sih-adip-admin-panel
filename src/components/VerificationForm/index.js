@@ -1,4 +1,14 @@
-import { Avatar, Button, Col, Form, Image, Input, Row, Select } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Form,
+  Image,
+  Input,
+  Row,
+  Select,
+  Tag,
+} from "antd";
 import React, { useState } from "react";
 import {
   RotateLeftOutlined,
@@ -105,10 +115,10 @@ const VerificationForm = ({
       <div style={{ fontSize: "1.4rem", margin: "3rem 0rem 2.5rem 0rem" }}>
         Requested Equipments Details
       </div>
-      <Row align="middle" justify="space-around">
+      <Row>
         {userData?.requestStatus?.aidsList?.map((aid) => (
-          <Col key={aid} span={6}>
-            {aid}
+          <Col key={aid}>
+            <Tag color="success"> {aid}</Tag>
           </Col>
         ))}
       </Row>

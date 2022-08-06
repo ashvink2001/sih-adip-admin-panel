@@ -5,6 +5,7 @@ import {
   DiffOutlined,
   PictureOutlined,
   WechatOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
 
 function getItem(label, key, icon, children) {
@@ -24,4 +25,5 @@ export const navData = [
   ]),
   getItem("News Update", "5", <DiffOutlined />),
   getItem("Support Chat", "6", <WechatOutlined />),
+  getItem("Ngo ", "7", <BankOutlined />),
 ];

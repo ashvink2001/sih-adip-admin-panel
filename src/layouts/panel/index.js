@@ -16,6 +16,7 @@ import VerifyById from "modules/dashboard/verifyById";
 import SupportChat from "modules/dashboard/supportChat";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
+import Ngo from "modules/dashboard/ngo";
 
 const Panel = ({ signOutSuccess }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -36,6 +37,8 @@ const Panel = ({ signOutSuccess }) => {
       return <News />;
     } else if (tab === "6") {
       return <SupportChat />;
+    } else if (tab === "7") {
+      return <Ngo />;
     } else {
       return <Home />;
     }

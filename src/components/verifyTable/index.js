@@ -5,14 +5,18 @@ import React, { useState } from "react";
 import VerificationForm from "components/VerificationForm";
 import { database } from "firebaseConfig/config";
 import { ref, remove, set, update } from "firebase/database";
+import { useSelector } from "react-redux";
 
 const VerifyTable = ({ list, loadingStatus }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
+  const { token } = useSelector((state) => state.auth);
 
   const handleApproved = async () => {
-    const { state, district, userId, udidNo, fcmToken } = selectedUser;
+    const { state, district, userId, udidNo, fcmToken, campLocation } =
+      selectedUser;
     //verify,message,add lat long
+
     await update(
       ref(database, "USERS/" + state + "/" + district + "/" + userId),
       {
@@ -20,14 +24,15 @@ const VerifyTable = ({ list, loadingStatus }) => {
         //temp
         "requestStatus/notAppropriate": false,
         "requestStatus/message": "verified Success soon equipment dispatch",
-        "requestStatus/latLng/lat": "2.0",
-        "requestStatus/latLng/lng": "2.0",
+        "requestStatus/latLng/": campLocation,
+        "requestStatus/verifierId": token,
       }
     )
       .then(() => {
         setModalVisible(false);
       })
       .catch((err) => console.log(err));
+
     //creating verificationCompleted
     await set(
       ref(
