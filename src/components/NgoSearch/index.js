@@ -15,24 +15,26 @@ const NgoSearch = ({ onSearchSubmit }) => {
 
   const fetchCampList = async (state, district) => {
     let campIdList = [];
-    let campList = [];
+    let tempList = [];
     await onValue(
       ref(database, "campingLocations/" + state + "/" + district + "/"),
       (snapshot) => {
-        campIdList = Object.keys(snapshot.val());
+        if (snapshot.val()) {
+          campIdList = Object.keys(snapshot.val());
+        }
       }
     );
 
     if (campIdList.length > 0) {
-      campIdList.map((campId) => {
-        onValue(ref(database, "CAMPING/" + campId), (snapshot) => {
-          campList.push(snapshot.val());
+      for (let campId of campIdList) {
+        await onValue(ref(database, "CAMPING/" + campId + "/"), (snapshot) => {
+          if (snapshot.val()) tempList.push(snapshot.val());
         });
-      });
+      }
     }
 
-    if (campList.length > 0) {
-      setCampList(campList);
+    if (tempList.length > 0) {
+      setCampList(tempList);
     }
   };
 

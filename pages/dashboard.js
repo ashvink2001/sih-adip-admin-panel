@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { signOutSuccess } from "redux/actions/Auth";
 import { connect, useSelector } from "react-redux";
-import { AUTH_TOKEN } from "redux/constants/Auth";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -32,8 +31,6 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const authToken = localStorage.getItem(AUTH_TOKEN);
-    console.log(authToken);
     if (!token) {
       router.push("/login");
     } else {

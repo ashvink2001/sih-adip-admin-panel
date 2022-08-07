@@ -39,10 +39,11 @@ const auth = (state = initState, action) => {
         showMessage: false,
       };
     case SIGNOUT_SUCCESS: {
+      localStorage.clear();
       return {
         ...state,
         token: null,
-        redirect: "/login",
+        redirect: "",
         loading: false,
       };
     }

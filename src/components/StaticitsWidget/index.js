@@ -29,22 +29,30 @@ const StaticsWidget = () => {
 
     //read reg users
     onValue(ref(database, "udidNoList"), (snapshot) => {
-      tempData.userCount = Object.keys(snapshot.val()).length;
+      if (snapshot.val()) {
+        tempData.userCount = Object.keys(snapshot.val()).length;
+      }
     });
 
     //read ngo count
     onValue(ref(database, "CAMPING"), (snapshot) => {
-      tempData.ngoCount = Object.keys(snapshot.val()).length;
+      if (snapshot.val()) {
+        tempData.ngoCount = Object.keys(snapshot.val()).length;
+      }
     });
 
     //need to get no of applications
     onValue(ref(database, "verificationList"), (snapshot) => {
-      tempData.verifiedApplicationCount = Object.keys(snapshot.val()).length;
+      if (snapshot.val()) {
+        tempData.verifiedApplicationCount = Object.keys(snapshot.val()).length;
+      }
     });
 
     //read news count
     onValue(ref(database, "news"), (snapshot) => {
-      tempData.newsCount = Object.keys(snapshot.val()).length;
+      if (snapshot.val()) {
+        tempData.newsCount = Object.keys(snapshot.val()).length;
+      }
     });
     setStaticsData(tempData);
   };

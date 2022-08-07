@@ -12,20 +12,15 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
   const [filteredList, setFilteredList] = useState([]);
 
   const openChat = (id) => {
-    // const data = list.map((elm) => {  unread message feature
-    //   if (elm.id === id) {
-    //     elm.unread = 0;
-    //   }
-    //   return elm;
-    // });
-    // setList(data);
     updateCurrentMessageId(id);
   };
 
   const fetchMessageData = () => {
     onValue(ref(database, "supportChat"), (snapshot) => {
-      setList(Object.values(snapshot.val()));
-      setFilteredList(Object.values(snapshot.val()));
+      if (snapshot.val()) {
+        setList(Object.values(snapshot.val()));
+        setFilteredList(Object.values(snapshot.val()));
+      }
     });
   };
 
@@ -50,24 +45,28 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
   };
 
   const prevTime = (item) => {
-    const messages = Object.values(item.message);
+    if (item?.message) {
+      const messages = Object.values(item.message);
 
-    let timestamp =
-      messages.length > 1
-        ? messages[messages.length - 1].timestamp
-        : messages[0].timestamp;
-    return new Date(timestamp).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+      let timestamp =
+        messages.length > 1
+          ? messages[messages.length - 1].timestamp
+          : messages[0].timestamp;
+      return new Date(timestamp).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
   };
 
   const prevText = (item) => {
-    const messages = Object.values(item.message);
+    if (item?.message) {
+      const messages = Object.values(item.message);
 
-    return messages.length > 1
-      ? messages[messages.length - 1].content
-      : messages[0].content;
+      return messages.length > 1
+        ? messages[messages.length - 1].content
+        : messages[0].content;
+    }
   };
 
   return (
@@ -98,14 +97,6 @@ const ChatMenu = ({ currentMessageId, updateCurrentMessageId }) => {
             />
             <div className="text-right">
               <div className="chat-menu-list-item-time">{prevTime(item)}</div>
-              {/* {item.unread === 0 ? (
-                <span></span>
-              ) : (
-                <Badge
-                  count={item.unread}
-                  style={{ backgroundColor:" #3e82f7" }}
-                />
-              )} */}
             </div>
           </div>
         ))}
