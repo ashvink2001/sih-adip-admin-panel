@@ -2,24 +2,17 @@ import { Button, Card, Col, Divider, Form, Input, Modal, Row } from "antd";
 import DataDisplayWidget from "components/DataDisplayWidget";
 import React, { useEffect, useState } from "react";
 import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { ref, remove, update } from "firebase/database";
+import { database } from "firebaseConfig/config";
 
-const { confirm, error } = Modal;
+const { confirm } = Modal;
 
 const ManageNgo = ({ ngoDetails }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [form] = Form.useForm();
 
-  const [groupDetail, setGroupDetail] = useState({});
-
   useEffect(() => {
-    console.log(ngoDetails);
-
     if (ngoDetails) {
-      setGroupDetail({
-        campName: ngoDetails.campingName,
-        emailId: ngoDetails.emailId,
-        password: ngoDetails.password,
-      });
       form.setFieldsValue({
         campName: ngoDetails.campingName,
         emailId: ngoDetails.emailId,
@@ -29,7 +22,33 @@ const ManageNgo = ({ ngoDetails }) => {
   }, [ngoDetails]);
 
   const onFinish = (values) => {
-    console.log(values);
+    update(ref(database, "CAMPING/" + ngoDetails.campId), {
+      campingName: values.campName,
+      emailId: values.emailId,
+      password: values.password,
+    })
+      .then(() => alert("updated successfully please refresh"))
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteNgo = (details) => {
+    remove(ref(database, "CAMPING/" + details.campId))
+      .then(() => {
+        remove(
+          ref(
+            database,
+            "campingLocations/" +
+              details.state +
+              "/" +
+              details.district +
+              "/" +
+              details.campId
+          )
+        ).then(() => alert("Ngo Removed please refresh"));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -147,8 +166,7 @@ const ManageNgo = ({ ngoDetails }) => {
                     content:
                       "Please doubt check, The Group data permanently deleted",
                     onOk() {
-                      console.log(ngoDetails.campId);
-                      //removeGroup(currentGroupId);
+                      handleDeleteNgo(ngoDetails);
                     },
                     onCancel() {},
                   });
