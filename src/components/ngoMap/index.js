@@ -26,11 +26,7 @@ const NgoMap = ({ nogDetail }) => {
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker
-          position={[location.lat, location.lng]}
-          draggable={true}
-          animate={true}
-        >
+        <Marker position={[location.lat, location.lng]} animate={true}>
           <Popup>{location.placeName}</Popup>
         </Marker>
       </MapContainer>
