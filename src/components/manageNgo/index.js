@@ -53,8 +53,8 @@ const ManageNgo = ({ ngoDetails }) => {
   };
 
   return (
-    <Col xs={24} sm={24} md={24} lg={16} xl={15} xxl={14}>
-      <Card style={{ height: "95%" }} title="Ngo Details">
+    <Col xs={24} sm={24} md={24} lg={13} xl={18} xxl={24}>
+      <Card title="Ngo Details">
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={12} className="mt-3 mr-4">
             <Form

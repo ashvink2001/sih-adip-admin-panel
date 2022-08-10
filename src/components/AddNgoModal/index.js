@@ -8,6 +8,7 @@ import { database } from "firebaseConfig/config";
 import { detail } from "utils/stateData/data";
 
 const { Option } = Select;
+const { TextArea } = Input;
 
 const AddNgoModal = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,6 +24,8 @@ const AddNgoModal = () => {
         emailId: value.emailId,
         state: value.state,
         district: value.district,
+        mobileNo: value.mobileNumber,
+        address: value.address,
       })
         .then((value) => {
           alert("New NGO Acc Added");
@@ -125,7 +128,7 @@ const AddNgoModal = () => {
               </Select>
             </Form.Item>
             <Form.Item
-              label="Select State"
+              label="Select District"
               name="district"
               rules={[{ required: true, message: "Please Select District!" }]}
             >
@@ -149,6 +152,23 @@ const AddNgoModal = () => {
                   ))}
               </Select>
             </Form.Item>
+            <Form.Item
+              label="Ph Number"
+              name="mobileNumber"
+              rules={[
+                { required: true, message: "Please input mobile number!" },
+                { len: 10 },
+              ]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Address"
+              name="address"
+              rules={[{ required: true, message: "Please input address" }]}
+            >
+              <TextArea />
+            </Form.Item>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <div
@@ -168,7 +188,10 @@ const AddNgoModal = () => {
                 </Button>
                 <Button
                   key="cancel"
-                  onClick={() => setIsModalVisible(false)}
+                  onClick={() => {
+                    form.resetFields();
+                    setIsModalVisible(false);
+                  }}
                   danger
                   type="primary"
                 >
