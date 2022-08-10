@@ -19,6 +19,7 @@ const ManageNgo = ({ ngoDetails }) => {
         password: ngoDetails.password,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ngoDetails]);
 
   const onFinish = (values) => {
