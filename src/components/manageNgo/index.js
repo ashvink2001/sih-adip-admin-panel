@@ -159,6 +159,7 @@ const ManageNgo = ({ ngoDetails }) => {
             >
               <Button
                 type="primary"
+                disabled={ngoDetails.campId ? false : true}
                 danger
                 onClick={() => {
                   confirm({
