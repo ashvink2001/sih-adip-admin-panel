@@ -1,4 +1,4 @@
-import { Card, Col, Row } from "antd";
+import { Card, Col, List, Row } from "antd";
 import AddNgoModal from "components/AddNgoModal";
 import ManageNgo from "components/manageNgo";
 import NgoSearch from "components/NgoSearch";
@@ -22,23 +22,47 @@ const Ngo = () => {
           <NgoSearch onSearchSubmit={handleSearch} />
         </Card>
       </Row>
-      <Row gutter={16}>
-        <ManageNgo ngoDetails={nogDetail} />
-        <Col
-          xs={24}
-          sm={24}
-          md={24}
-          lg={8}
-          xl={9}
-          xxl={10}
-          style={{ height: "20rem", width: "100%", marginBottom: "2rem" }}
-        >
-          <NgoMap nogDetail={nogDetail.location} />
+      <Row justify="space-between">
+        <Col xs={24} sm={24} md={24} lg={8} xl={10} xxl={15}>
+          <Col
+            xs={24}
+            sm={24}
+            md={24}
+            lg={12}
+            xl={12}
+            xxl={24}
+            style={{ height: "23rem" }}
+          >
+            <ManageNgo ngoDetails={nogDetail} />
+          </Col>
+          <Col
+            xs={24}
+            sm={24}
+            md={24}
+            lg={12}
+            xl={12}
+            xxl={24}
+            style={{ height: "18rem", width: "100%" }}
+          >
+            <NgoMap nogDetail={nogDetail.location} />
+          </Col>
         </Col>
-      </Row>
-      <Row>
-        <Col xs={24} sm={24} md={24} lg={6} xl={6} xxl={6}>
-          <AddNgoModal />
+        <Col xs={24} sm={24} md={24} lg={8} xl={7} xxl={8}>
+          <Card title="Aids List">
+            <List
+              style={{ overflowY: "scroll", height: "35rem" }}
+              size="small"
+              bordered
+              dataSource={
+                nogDetail.aidsData && Object.entries(nogDetail.aidsData)
+              }
+              renderItem={(item) => (
+                <List.Item>
+                  {item[0]} : {item[1]}
+                </List.Item>
+              )}
+            />
+          </Card>
         </Col>
       </Row>
     </>

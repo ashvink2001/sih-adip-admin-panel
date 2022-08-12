@@ -118,7 +118,10 @@ const VerificationForm = ({
       <Row>
         {userData?.requestStatus?.aidsList?.map((aid) => (
           <Col key={aid}>
-            <Tag color="success"> {aid}</Tag>
+            <Tag color="success" style={{ margin: ".4rem" }}>
+              {" "}
+              {aid}
+            </Tag>
           </Col>
         ))}
       </Row>
