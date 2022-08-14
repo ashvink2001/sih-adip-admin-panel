@@ -13,15 +13,8 @@ const VerifyTable = ({ list, loadingStatus }) => {
   const { token } = useSelector((state) => state.auth);
 
   const handleApproved = async (values) => {
-    const { state, district, userId, udidNo, fcmToken, campLocation } =
-      selectedUser;
-    console.log(
-      values.ngo.map((ngo) => ({
-        ngoId: ngo.ngoId,
-        aidList: ngo.aidList,
-        aidsReceived: false,
-      }))
-    );
+    const { state, district, userId, udidNo, fcmToken } = selectedUser;
+
     //verify,message,add lat long
 
     await update(
