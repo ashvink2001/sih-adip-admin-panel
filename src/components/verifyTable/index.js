@@ -42,7 +42,7 @@ const VerifyTable = ({ list, loadingStatus }) => {
             ),
             {
               ngoId: ngo.ngoId,
-              aidsList: ngo.aidList,
+              aidsList: ngo.aidsList,
               aidsReceived: false,
             }
           );

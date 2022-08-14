@@ -226,7 +226,7 @@ const VerificationForm = ({
                       </Form.Item>
                       <Form.Item
                         {...restField}
-                        name={[name, "aidList"]}
+                        name={[name, "aidsList"]}
                         style={{ width: "16rem" }}
                         rules={[
                           {
