@@ -4,7 +4,7 @@ import { UserAddOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import VerificationForm from "components/VerificationForm";
 import { database } from "firebaseConfig/config";
-import { ref, remove, set, update } from "firebase/database";
+import { push, ref, remove, set, update } from "firebase/database";
 import { useSelector } from "react-redux";
 
 const VerifyTable = ({ list, loadingStatus }) => {
@@ -12,23 +12,48 @@ const VerifyTable = ({ list, loadingStatus }) => {
   const [selectedUser, setSelectedUser] = useState();
   const { token } = useSelector((state) => state.auth);
 
-  const handleApproved = async () => {
+  const handleApproved = async (values) => {
     const { state, district, userId, udidNo, fcmToken, campLocation } =
       selectedUser;
+    console.log(
+      values.ngo.map((ngo) => ({
+        ngoId: ngo.ngoId,
+        aidList: ngo.aidList,
+        aidsReceived: false,
+      }))
+    );
     //verify,message,add lat long
 
     await update(
       ref(database, "USERS/" + state + "/" + district + "/" + userId),
       {
         "requestStatus/verified": true,
-        //temp
         "requestStatus/notAppropriate": false,
         "requestStatus/message": "verified Success soon equipment dispatch",
-        "requestStatus/latLng/": campLocation,
         "requestStatus/verifierId": token,
       }
     )
-      .then(() => {
+      .then(async () => {
+        for (let ngo of values.ngo) {
+          await push(
+            ref(
+              database,
+              "USERS/" +
+                state +
+                "/" +
+                district +
+                "/" +
+                userId +
+                "/" +
+                "requestStatus/ngoList"
+            ),
+            {
+              ngoId: ngo.ngoId,
+              aidList: ngo.aidList,
+              aidsReceived: false,
+            }
+          );
+        }
         setModalVisible(false);
       })
       .catch((err) => console.log(err));
@@ -61,10 +86,6 @@ const VerifyTable = ({ list, loadingStatus }) => {
     ).catch((err) => {
       console.log(err);
     });
-
-    //set notification
-
-    // await getMessage().subscribeToTopic(fcmToken,"Request Verified").then
   };
 
   const handleNotApproved = async (message) => {

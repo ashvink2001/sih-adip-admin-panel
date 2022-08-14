@@ -1,9 +1,21 @@
-import { Button, Card, Col, Divider, Form, Input, Modal, Row } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+} from "antd";
 import DataDisplayWidget from "components/DataDisplayWidget";
 import React, { useEffect, useState } from "react";
 import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { ref, remove, update } from "firebase/database";
 import { database } from "firebaseConfig/config";
+import { CopyOutlined } from "@ant-design/icons";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const { confirm } = Modal;
 
@@ -54,7 +66,26 @@ const ManageNgo = ({ ngoDetails }) => {
 
   return (
     <Col xs={24} sm={24} md={24} lg={13} xl={18} xxl={24}>
-      <Card title="Ngo Details">
+      <Card
+        title={
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>Ngo Details</div>
+            <div>
+              Id: {ngoDetails?.campId}
+              <CopyToClipboard
+                text={ngoDetails?.campId}
+                onCopy={() => message.success("Agent Id Copied")}
+              >
+                <Button
+                  icon={<CopyOutlined />}
+                  style={{ marginLeft: ".7rem" }}
+                  size="small"
+                />
+              </CopyToClipboard>
+            </div>
+          </div>
+        }
+      >
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={12} className="mt-3 mr-4">
             <Form

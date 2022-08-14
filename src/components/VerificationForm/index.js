@@ -7,6 +7,7 @@ import {
   Input,
   Row,
   Select,
+  Space,
   Tag,
 } from "antd";
 import React, { useState } from "react";
@@ -18,6 +19,8 @@ import {
   CloseOutlined,
   LeftOutlined,
   RightOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 
 const { Option } = Select;
@@ -43,26 +46,20 @@ const VerificationForm = ({
   handleApproved,
   handleNotApproved,
 }) => {
-  const {
-    addressProofUrl,
-    disabilityCertificateURL,
-    identityProofUrl,
-    incomeTaxCertificateUrl,
-    passportSizePhotoURL,
-  } = userData.aidsVerificationDocs;
+  const { incomeTaxCertificateUrl } = userData.aidsVerificationDocs;
 
   const [status, setStatus] = useState("");
-  const [remark, setRemark] = useState("");
+  const [remark, setRemark] = useState(userData.requestStatus?.message || "");
 
-  const handleSubmit = () => {
-    if (status === "notApproved" && remark.length !== 0) {
-      handleNotApproved(remark);
-    } else if (status === "approved") {
-      handleApproved();
-    } else {
-      //error handleer
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (status === "notApproved" && remark.length !== 0) {
+  //     handleNotApproved(remark);
+  //   } else if (status === "approved") {
+  //     handleApproved();
+  //   } else {
+  //     //error handleer
+  //   }
+  // };
 
   return (
     <div style={{ marginBottom: "3rem" }}>
@@ -134,54 +131,6 @@ const VerificationForm = ({
         style={{ marginBottom: "2.5rem" }}
       >
         <Col>
-          <Col style={{ textAlign: "center" }}>Address Proof</Col>
-          <Col style={{ marginTop: "1.5rem" }}>
-            <Image
-              width={250}
-              height={250}
-              src={addressProofUrl}
-              alt="address proof"
-              preview={{
-                icons: prevIcons,
-              }}
-            />
-          </Col>
-        </Col>
-        <Col>
-          <Col style={{ textAlign: "center" }}>DisabilityCertificate Proof</Col>
-          <Col style={{ marginTop: "1.5rem" }}>
-            <Image
-              width={250}
-              height={250}
-              src={disabilityCertificateURL}
-              alt="address proof"
-              preview={{
-                icons: prevIcons,
-              }}
-            />
-          </Col>
-        </Col>
-      </Row>
-      <Row
-        align="middle"
-        justify="space-around"
-        style={{ marginBottom: "2.5rem" }}
-      >
-        <Col>
-          <Col style={{ textAlign: "center" }}>Identity Proof</Col>
-          <Col style={{ marginTop: "1.5rem" }}>
-            <Image
-              width={250}
-              height={250}
-              src={identityProofUrl}
-              alt="address proof"
-              preview={{
-                icons: prevIcons,
-              }}
-            />
-          </Col>
-        </Col>
-        <Col>
           <Col style={{ textAlign: "center" }}>IncomeTax Proof</Col>
           <Col style={{ marginTop: "1.5rem" }}>
             <Image
@@ -196,36 +145,21 @@ const VerificationForm = ({
           </Col>
         </Col>
       </Row>
-      <Row align="middle" justify="space-around">
-        <Col>
-          <Col style={{ textAlign: "center" }}>Passport Size Photo Proof</Col>
-          <Col style={{ marginTop: "1.5rem" }}>
-            <Image
-              width={250}
-              height={250}
-              src={passportSizePhotoURL}
-              alt="address proof"
-              preview={{
-                icons: prevIcons,
-              }}
-            />
-          </Col>
-        </Col>
-      </Row>
+
       <div style={{ fontSize: "1.4rem", margin: "2rem 0rem 2rem 0rem" }}>
         Change The status
       </div>
-      <Form>
-        <label>Select Status : </label>
-        <Select
-          onChange={(e) => setStatus(e)}
-          style={{ width: "50%", marginBottom: "3rem" }}
-          placeholder="Select The Verification Status"
-        >
-          <Option value="approved">Verified & Give Approved</Option>
-          <Option value="notApproved">Inappropriate Data & Not Approved</Option>
-        </Select>
-        {status === "notApproved" && (
+      <label>Select Status : </label>
+      <Select
+        onChange={(e) => setStatus(e)}
+        style={{ width: "50%", marginBottom: "3rem" }}
+        placeholder="Select The Verification Status"
+      >
+        <Option value="approved">Verified & Give Approved</Option>
+        <Option value="notApproved">Inappropriate Data & Not Approved</Option>
+      </Select>
+      {status === "notApproved" ? (
+        <>
           <div
             style={{
               display: "flex",
@@ -236,35 +170,140 @@ const VerificationForm = ({
             <label style={{ marginRight: ".6rem" }}>Select Status : </label>
             <TextArea
               style={{ width: "80%" }}
-              value={userData.requestStatus?.message || remark}
+              value={remark}
               onChange={(e) => setRemark(e.target.value)}
               placeholder="Enter Remarks"
               rows={4}
             />
           </div>
-        )}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div
-            style={{
-              width: "25%",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Button key="submit" type="primary" onClick={() => handleSubmit()}>
-              Submit
-            </Button>
-            <Button
-              key="cancel"
-              onClick={() => setModalVisible(false)}
-              danger
-              type="primary"
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                width: "25%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
             >
-              Cancel
-            </Button>
+              <Button
+                key="submit"
+                type="primary"
+                onClick={() => handleNotApproved(remark)}
+              >
+                Submit
+              </Button>
+              <Button
+                key="cancel"
+                onClick={() => setModalVisible(false)}
+                danger
+                type="primary"
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
-        </div>
-      </Form>
+        </>
+      ) : (
+        status === "approved" && (
+          <Form
+            name="dynamic_form_nest_item"
+            onFinish={handleApproved}
+            autoComplete="off"
+          >
+            <Form.List name="ngo">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{
+                        display: "flex",
+                        marginBottom: 8,
+                      }}
+                      align="baseline"
+                    >
+                      <label>Add Ngo Detail :</label>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "ngoId"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Missing Ngo Id",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Ngo Id" />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "aidList"]}
+                        style={{ width: "16rem" }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Missing Aid List",
+                          },
+                        ]}
+                      >
+                        <Select
+                          placeholder="Select Aid List"
+                          mode="multiple"
+                          allowClear
+                        >
+                          {userData.requestStatus.aidsList?.map((aid) => (
+                            <Option key={aid} value={aid}>
+                              {aid}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      style={{ width: "30rem", marginLeft: "5.7rem" }}
+                      icon={<PlusOutlined />}
+                    >
+                      Add Ngos
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+            <Form.Item>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={{
+                    width: "25%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Button
+                    key="submit"
+                    type="primary"
+                    htmlType="submit"
+                    // onClick={() => handleSubmit()}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    key="cancel"
+                    onClick={() => setModalVisible(false)}
+                    danger
+                    type="primary"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </Form.Item>
+          </Form>
+        )
+      )}
     </div>
   );
 };
