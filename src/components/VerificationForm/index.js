@@ -51,16 +51,6 @@ const VerificationForm = ({
   const [status, setStatus] = useState("");
   const [remark, setRemark] = useState(userData.requestStatus?.message || "");
 
-  // const handleSubmit = () => {
-  //   if (status === "notApproved" && remark.length !== 0) {
-  //     handleNotApproved(remark);
-  //   } else if (status === "approved") {
-  //     handleApproved();
-  //   } else {
-  //     //error handleer
-  //   }
-  // };
-
   return (
     <div style={{ marginBottom: "3rem" }}>
       <div style={{ fontSize: "1.4rem", marginBottom: "2rem" }}>
