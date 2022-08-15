@@ -28,15 +28,18 @@ const VerifyByPlace = () => {
         (snapshot) => {
           const arr = [];
           userIdList.map((id) => {
+            console.log(id, snapshot.val());
             let value = snapshot.val()[id];
             console.log(value);
-            if (
-              !value.requestStatus.verified &&
-              !value.requestStatus.notAppropriate
-            ) {
+            const requestStatus = Object.values(value.requestStatus)?.reduce(
+              (a, b) => (a.appliedOnTimeStamp > b.appliedOnTimeStamp ? a : b)
+            );
+            console.log(requestStatus);
+            if (!requestStatus.verified && !requestStatus.notAppropriate) {
               arr.push({
                 ...snapshot.val()[id],
                 userId: id,
+                requestStatus: requestStatus, //converted to single requestStatus(latest)
               });
             }
           });

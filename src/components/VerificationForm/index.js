@@ -46,8 +46,7 @@ const VerificationForm = ({
   handleApproved,
   handleNotApproved,
 }) => {
-  const { incomeTaxCertificateUrl } = userData.aidsVerificationDocs;
-
+  const incomeTaxCertificateUrl = userData.requestStatus.incomeCertificate;
   const [status, setStatus] = useState("");
   const [remark, setRemark] = useState(userData.requestStatus?.message || "");
 
@@ -127,7 +126,7 @@ const VerificationForm = ({
               width={250}
               height={250}
               src={incomeTaxCertificateUrl}
-              alt="address proof"
+              alt="IncomeTax proof"
               preview={{
                 icons: prevIcons,
               }}

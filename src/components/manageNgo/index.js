@@ -65,7 +65,7 @@ const ManageNgo = ({ ngoDetails }) => {
   };
 
   return (
-    <Col xs={24} sm={24} md={24} lg={13} xl={18} xxl={24}>
+    <Col xs={24} sm={24} md={24} lg={13} xl={24} xxl={24}>
       <Card
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -86,8 +86,16 @@ const ManageNgo = ({ ngoDetails }) => {
           </div>
         }
       >
-        <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={12} className="mt-3 mr-4">
+        <Row gutter={15}>
+          <Col
+            xs={24}
+            sm={24}
+            md={24}
+            lg={12}
+            xl={12}
+            xxl={12}
+            className="mt-3 mr-4"
+          >
             <Form
               form={form}
               labelCol={{ span: 8 }}
@@ -171,7 +179,7 @@ const ManageNgo = ({ ngoDetails }) => {
             sm={24}
             md={24}
             lg={16}
-            xl={15}
+            xl={10}
             xxl={10}
             style={{
               display: "flex",

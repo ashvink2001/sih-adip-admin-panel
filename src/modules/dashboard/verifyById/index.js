@@ -35,15 +35,19 @@ const VerifyById = () => {
         ),
         (snapshot) => {
           let value = snapshot.val()[placeDetail.userId];
+          const requestStatus = Object.values(value.requestStatus)?.reduce(
+            (a, b) => (a.appliedOnTimeStamp > b.appliedOnTimeStamp ? a : b)
+          );
           if (
             value !== undefined &&
-            !value.requestStatus.verified &&
-            !value.requestStatus.notAppropriate
+            !requestStatus.verified &&
+            !requestStatus.notAppropriate
           ) {
             setVerifyList([
               {
                 ...value,
                 userId: placeDetail.userId,
+                requestStatus: requestStatus, //converted to single requestStatus(latest)
               },
             ]);
           }

@@ -23,13 +23,13 @@ const Ngo = () => {
         </Card>
       </Row>
       <Row justify="space-between">
-        <Col xs={24} sm={24} md={24} lg={8} xl={10} xxl={15}>
+        <Col xs={24} sm={24} md={24} lg={8} xl={16} xxl={15}>
           <Col
             xs={24}
             sm={24}
             md={24}
             lg={12}
-            xl={12}
+            xl={24}
             xxl={24}
             style={{ height: "23rem" }}
           >
@@ -40,9 +40,9 @@ const Ngo = () => {
             sm={24}
             md={24}
             lg={12}
-            xl={12}
+            xl={24}
             xxl={24}
-            style={{ height: "18rem", width: "100%" }}
+            style={{ height: "18rem", width: "100%", marginTop: "1.5rem" }}
           >
             <NgoMap nogDetail={nogDetail.location} />
           </Col>
