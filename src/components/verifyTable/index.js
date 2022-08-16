@@ -4,7 +4,7 @@ import { UserAddOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import VerificationForm from "components/VerificationForm";
 import { database } from "firebaseConfig/config";
-import { push, ref, remove, set, update } from "firebase/database";
+import { onValue, push, ref, remove, set, update } from "firebase/database";
 import { useSelector } from "react-redux";
 
 const VerifyTable = ({ list, loadingStatus }) => {
@@ -13,86 +13,101 @@ const VerifyTable = ({ list, loadingStatus }) => {
   const { token } = useSelector((state) => state.auth);
 
   const handleApproved = async (values) => {
-    const { state, district, userId, udidNo, fcmToken } = selectedUser;
-
-    //verify,message,add lat long
-
+    const { state, district, userId, udidNo, fcmToken, key } = selectedUser;
+    //verify,message,add nog list
+    let obj = {};
+    Object.values(values.ngo).map(
+      (value) => (obj[Date.now()] = { ...value, aidsReceived: false })
+    );
     await update(
-      ref(database, "USERS/" + state + "/" + district + "/" + userId),
+      ref(
+        database,
+        "USERS/" +
+          state +
+          "/" +
+          district +
+          "/" +
+          userId +
+          "/requestStatus/" +
+          key
+      ),
       {
-        "requestStatus/verified": true,
-        "requestStatus/notAppropriate": false,
-        "requestStatus/message": "verified Success soon equipment dispatch",
-        "requestStatus/verifierId": token,
+        verified: true,
+        notAppropriate: false,
+        message: "verified Success soon equipment dispatch",
+        verifierId: token,
+        ngoList: obj,
       }
     )
       .then(async () => {
-        for (let ngo of values.ngo) {
-          await push(
-            ref(
-              database,
-              "USERS/" +
-                state +
-                "/" +
-                district +
-                "/" +
-                userId +
-                "/" +
-                "requestStatus/ngoList"
-            ),
-            {
-              ngoId: ngo.ngoId,
-              aidsList: ngo.aidsList,
-              aidsReceived: false,
-            }
-          );
-        }
         setModalVisible(false);
       })
       .catch((err) => console.log(err));
 
     //creating verificationCompleted
-    await set(
-      ref(
-        database,
-        "verificationCompleted/" + state + "/" + district + "/" + userId
-      ),
-      {
-        district: district,
-        state: state,
-        userId: userId,
-        fcmToken: fcmToken,
-      }
-    );
 
-    //creating verificationList
+    for (let ngo of values.ngo) {
+      await onValue(ref(database, "CAMPING/" + ngo.ngoId), (snapshot) => {
+        console.log(snapshot.val());
+        let { state: ngoState, district: ngoDistrict } = snapshot.val();
+        set(
+          ref(
+            database,
+            "verificationCompleted/" +
+              ngoState +
+              "/" +
+              ngoDistrict +
+              "/" +
+              userId
+          ),
+          {
+            district: district,
+            state: state,
+            userId: userId,
+            fcmToken: fcmToken,
+          }
+        );
+      });
+    }
+
+    // //creating verificationList
     await set(ref(database, "verificationList/" + userId), {
       udid: udidNo,
     });
-
     //removed from verificationApplied
-    remove(
-      ref(
-        database,
-        "verificationApplied/" + state + "/" + district + "/" + userId
-      )
-    ).catch((err) => {
-      console.log(err);
-    });
+    // remove(
+    //   ref(
+    //     database,
+    //     "verificationApplied/" + state + "/" + district + "/" + userId
+    //   )
+    // ).catch((err) => {
+    //   console.log(err);
+    // });
   };
 
   const handleNotApproved = async (message) => {
-    const { state, district, userId } = selectedUser;
+    const { state, district, userId, key } = selectedUser;
 
     await update(
-      ref(database, "USERS/" + state + "/" + district + "/" + userId),
+      ref(
+        database,
+        "USERS/" +
+          state +
+          "/" +
+          district +
+          "/" +
+          userId +
+          "/requestStatus/" +
+          key
+      ),
       {
-        "requestStatus/notAppropriate": true,
-        "requestStatus/message": message,
+        notAppropriate: true,
+        message: message,
       }
     )
       .then(() => {
         setModalVisible(false);
+        //aid list remove the aid that are rejected
       })
       .catch((err) => console.log(err));
   };
@@ -168,7 +183,7 @@ const VerifyTable = ({ list, loadingStatus }) => {
         className="no-border-last"
         columns={tableColumns}
         dataSource={list}
-        rowKey="udidNo"
+        rowKey="key"
         pagination={true}
         style={{ height: "20rem" }}
         loading={loadingStatus}

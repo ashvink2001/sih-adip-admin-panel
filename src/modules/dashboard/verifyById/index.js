@@ -27,30 +27,45 @@ const VerifyById = () => {
         setLoadingData(false);
       }
     });
-    if (placeDetail.district !== "" && placeDetail.state !== "") {
+    if (
+      placeDetail.district !== "" &&
+      placeDetail.state !== "" &&
+      placeDetail.userId !== ""
+    ) {
       await onValue(
         ref(
           database,
           "USERS/" + placeDetail.state + "/" + placeDetail.district + "/"
         ),
         (snapshot) => {
+          console.log(snapshot.val());
           let value = snapshot.val()[placeDetail.userId];
-          const requestStatus = Object.values(value.requestStatus)?.reduce(
-            (a, b) => (a.appliedOnTimeStamp > b.appliedOnTimeStamp ? a : b)
+          let requestList = Object.values(value.requestStatus)?.filter(
+            (request) => !request.verified && !request.verified
           );
-          if (
-            value !== undefined &&
-            !requestStatus.verified &&
-            !requestStatus.notAppropriate
-          ) {
+          requestList.map((requestStatus) => {
             setVerifyList([
               {
-                ...value,
+                ...snapshot.val()[placeDetail.userId],
                 userId: placeDetail.userId,
+                key: requestStatus.appliedOnTimeStamp,
                 requestStatus: requestStatus, //converted to single requestStatus(latest)
               },
             ]);
-          }
+          });
+          // if (
+          //   value !== undefined &&
+          //   !requestStatus.verified &&
+          //   !requestStatus.notAppropriate
+          // ) {
+          //   setVerifyList([
+          //     {
+          //       ...value,
+          //       userId: placeDetail.userId,
+          //       requestStatus: requestStatus, //converted to single requestStatus(latest)
+          //     },
+          //   ]);
+          // }
           setLoadingData(false);
         }
       );
