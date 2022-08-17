@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Input } from "antd";
+import { Input } from "antd";
 import AvatarStatus from "components/AvatarStatus";
 import { updateCurrentMessageId } from "redux/actions/Message";
 import { SearchOutlined } from "@ant-design/icons";

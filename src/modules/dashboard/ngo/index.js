@@ -1,5 +1,4 @@
 import { Card, Col, List, Row } from "antd";
-import AddNgoModal from "components/AddNgoModal";
 import ManageNgo from "components/manageNgo";
 import NgoSearch from "components/NgoSearch";
 import dynamic from "next/dynamic";

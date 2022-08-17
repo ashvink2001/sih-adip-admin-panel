@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input, Form, Button, Menu } from "antd";
-import {
-  SendOutlined,
-  AudioMutedOutlined,
-  UserOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { SendOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Scrollbars } from "react-custom-scrollbars";
 import EllipsisDropdown from "components/EllipsisDropdown";
 import AvatarStatus from "components/AvatarStatus";

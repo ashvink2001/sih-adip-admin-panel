@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Avatar, Row } from "antd";
+import { Card, Avatar } from "antd";
 import CustomStatistic from "../CustomStatistic";
 import Flex from "components/Flex";
 

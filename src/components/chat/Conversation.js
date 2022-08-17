@@ -43,18 +43,6 @@ export class Conversation extends React.Component {
     this.getConversation(id);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.location.pathname !== prevProps.location.pathname) {
-  //     this.getConversation(this.getUserId());
-  //   }
-  //   this.scrollToBottom();
-  // }
-
-  // getUserId() {
-  //   const { id } = this.props.match.params;
-  //   return parseInt(parseInt(id));
-  // }
-
   getConversation = (currentId) => {
     const data = chatData.supportChat[currentId];
     console.log(data);
