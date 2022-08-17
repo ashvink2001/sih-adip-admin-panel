@@ -23,9 +23,12 @@ const VerifyTable = ({ list, loadingStatus }) => {
     //verify,message,add nog list
     let obj = {};
     Object.values(values.ngo).map(
-      (value) => (obj[Date.now()] = { ...value, aidsReceived: false })
+      (value) =>
+        (obj[Math.floor(100000 + Math.random() * 900000)] = {
+          ...value,
+          aidsReceived: false,
+        })
     );
-    console.log(obj, values.ngo);
     await update(
       ref(
         database,

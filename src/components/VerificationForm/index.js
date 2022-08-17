@@ -271,12 +271,7 @@ const VerificationForm = ({
                     justifyContent: "space-between",
                   }}
                 >
-                  <Button
-                    key="submit"
-                    type="primary"
-                    htmlType="submit"
-                    // onClick={() => handleSubmit()}
-                  >
+                  <Button key="submit" type="primary" htmlType="submit">
                     Submit
                   </Button>
                   <Button
