@@ -6,6 +6,7 @@ import {
   SIGNOUT_SUCCESS,
   SIGNUP_SUCCESS,
   SHOW_LOADING,
+  UPDATE_ACCESS,
 } from "../constants/Auth";
 
 const initState = {
@@ -13,6 +14,7 @@ const initState = {
   message: "",
   showMessage: false,
   redirect: "",
+  access: [],
   token: typeof window != "undefined" && localStorage.getItem(AUTH_TOKEN),
 };
 
@@ -24,6 +26,7 @@ const auth = (state = initState, action) => {
         loading: false,
         redirect: "/dashboard",
         token: action.token,
+        access: action.access,
       };
     case SHOW_AUTH_MESSAGE:
       return {
@@ -51,14 +54,20 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        token: action.token,
-        redirect: "/dashboard",
+        //token: action.token,
+        redirect: "/login",
       };
     }
     case SHOW_LOADING: {
       return {
         ...state,
         loading: true,
+      };
+    }
+    case UPDATE_ACCESS: {
+      return {
+        ...state,
+        access: action.accessList,
       };
     }
     default:

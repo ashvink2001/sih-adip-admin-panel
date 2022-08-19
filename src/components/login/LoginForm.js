@@ -11,8 +11,9 @@ import {
 } from "redux/actions/Auth";
 import { useRouter } from "next/router";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "firebaseConfig/config";
+import { auth, database } from "firebaseConfig/config";
 import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
+import { onValue, ref } from "firebase/database";
 
 export const LoginForm = (props) => {
   const router = useRouter();
@@ -22,7 +23,7 @@ export const LoginForm = (props) => {
     hideAuthMessage,
     onForgetPasswordClick,
     showLoading,
-    userId,
+    token,
     loading,
     redirect,
     showMessage,
@@ -36,15 +37,25 @@ export const LoginForm = (props) => {
 
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then((res) => {
-        if (typeof window != "undefined") {
-          localStorage.setItem(AUTH_TOKEN, res.user.uid);
+        onValue(ref(database, "admin/" + res.user.uid), (snapshot) => {
+          const value = snapshot.val();
+          if (!value.isApproved) {
+            showAuthMessage("Admin Need to Verify You Try later");
+          } else if (!value.permission) {
+            showAuthMessage("Need Permission To allow you contact admin");
+          } else {
+            if (typeof window != "undefined") {
+              localStorage.setItem(AUTH_TOKEN, res.user.uid);
 
-          //expiryDate
-          var date = new Date();
-          date.setDate(date.getDate() + 1); // add a day
-          localStorage.setItem(EXPIRY_DATE, date);
-        }
-        authenticated(res.user.uid);
+              //expiryDate
+              var date = new Date();
+              date.setDate(date.getDate() + 1); // add a day
+              localStorage.setItem(EXPIRY_DATE, date);
+            }
+
+            authenticated(res.user.uid, value.access);
+          }
+        });
       })
       .catch((err) => {
         showAuthMessage(err.code);
@@ -52,7 +63,7 @@ export const LoginForm = (props) => {
   };
 
   useEffect(() => {
-    if (userId !== null && redirect === "/dashboard") {
+    if (token !== null && redirect === "/dashboard") {
       router.push(redirect);
     }
     if (showMessage) {
@@ -139,8 +150,8 @@ LoginForm.defaultProps = {
 };
 
 const mapStateToProps = ({ auth }) => {
-  const { loading, message, showMessage, userId, redirect } = auth;
-  return { loading, message, showMessage, userId, redirect };
+  const { loading, message, showMessage, token, redirect } = auth;
+  return { loading, message, showMessage, token, redirect };
 };
 
 const mapDispatchToProps = {

@@ -8,3 +8,4 @@ export const HIDE_AUTH_MESSAGE = "HIDE_AUTH_MESSAGE";
 export const SHOW_LOADING = "SHOW_LOADING";
 export const AUTH_TOKEN = "auth_token";
 export const EXPIRY_DATE = "expiryDate";
+export const UPDATE_ACCESS = "UPDATE_ACCESS";

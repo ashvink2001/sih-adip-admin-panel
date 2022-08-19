@@ -5,11 +5,13 @@ import {
   HIDE_AUTH_MESSAGE,
   SIGNUP_SUCCESS,
   SHOW_LOADING,
+  UPDATE_ACCESS,
 } from "../constants/Auth";
 
-export const authenticated = (token) => {
+export const authenticated = (token, access) => {
   return {
     type: AUTHENTICATED,
+    access,
     token,
   };
 };
@@ -43,5 +45,12 @@ export const hideAuthMessage = () => {
 export const showLoading = () => {
   return {
     type: SHOW_LOADING,
+  };
+};
+
+export const updateAccess = (accessList) => {
+  return {
+    type: UPDATE_ACCESS,
+    accessList,
   };
 };

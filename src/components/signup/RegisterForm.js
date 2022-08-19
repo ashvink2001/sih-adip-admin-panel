@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Alert } from "antd";
+import { Button, Form, Input, Alert, Select } from "antd";
 import {
   signUp,
   showAuthMessage,
@@ -10,10 +10,20 @@ import {
   signUpSuccess,
 } from "redux/actions/Auth";
 import { useRouter } from "next/router";
-import { ref, set } from "firebase/database";
+import { push, ref, set } from "firebase/database";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, database } from "firebaseConfig/config";
 import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
+
+const currentRoles = [
+  { label: "Verification Page", value: "verification" },
+  { label: "News Update Page", value: "news" },
+  { label: "SupportChat Page", value: "supportChat" },
+  { label: "Ngo Manage Page", value: "ngo" },
+  { label: "Admin Page", value: "admin" },
+];
+
+const { Option } = Select;
 
 const rules = {
   name: [
@@ -30,6 +40,12 @@ const rules = {
     {
       type: "email",
       message: "Please enter a validate email!",
+    },
+  ],
+  access: [
+    {
+      required: true,
+      message: "Please Select at least one role",
     },
   ],
   password: [
@@ -76,35 +92,45 @@ export const RegisterForm = (props) => {
   const [form] = Form.useForm();
   const router = useRouter();
 
-  const addUserData = async (userId, email, name) => {
-    await set(ref(database, "admin/" + userId), {
+  const addUserData = (userId, email, name, access) => {
+    set(ref(database, "admin/" + userId), {
       email,
       name,
       userId: userId,
+      access: access,
+      isApproved: false,
+      permissions: false,
     })
       .then((res) => {
+        pushApprovalNode(userId);
         signUpSuccess(userId);
       })
       .catch((err) => console.log(err));
+  };
+
+  const pushApprovalNode = (adminId) => {
+    push(ref(database, "verifyAdmin/"), adminId).catch((err) =>
+      console.log(err)
+    );
   };
 
   const onSignUp = () => {
     form
       .validateFields()
       .then((values) => {
-        const { name, email, password } = values;
+        const { name, email, password, access } = values;
         showLoading();
         createUserWithEmailAndPassword(auth, email, password)
           .then((res) => {
-            if (typeof window != "undefined") {
-              localStorage.setItem(AUTH_TOKEN, res.user.uid);
+            //     if (typeof window != "undefined") {
+            //       localStorage.setItem(AUTH_TOKEN, res.user.uid);
 
-              //expiryDate
-              var date = new Date();
-              date.setDate(date.getDate() + 1); // add a day
-              localStorage.setItem(EXPIRY_DATE, date);
-            }
-            addUserData(res.user.uid, email, name);
+            //       //expiryDate
+            //       var date = new Date();
+            //       date.setDate(date.getDate() + 1); // add a day
+            //       localStorage.setItem(EXPIRY_DATE, date);
+            //     }
+            addUserData(res.user.uid, email, name, access);
           })
           .catch((err) => {
             showAuthMessage(err.code);
@@ -165,6 +191,22 @@ export const RegisterForm = (props) => {
         >
           <Input.Password prefix={<LockOutlined className="text-primary" />} />
         </Form.Item>
+
+        <Form.Item
+          name={"access"}
+          label={"Required Access"}
+          rules={rules.access}
+          hasFeedback
+        >
+          <Select placeholder="Access" mode="multiple" allowClear>
+            {currentRoles?.map((role) => (
+              <Option key={role.value} value={role.value}>
+                {role.label}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
         <Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}>
             Sign Up

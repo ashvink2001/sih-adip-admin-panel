@@ -3,22 +3,24 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import { signOutSuccess } from "redux/actions/Auth";
+import { connect, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 //local
 const { Header, Content, Footer, Sider } = Layout;
 
 import Logo from "images/logo.png";
-import { navData } from "./data";
+import { fetchAdminMenu } from "./data";
 import Home from "modules/dashboard/home";
 import News from "modules/dashboard/news";
 import VerifyByPlace from "modules/dashboard/verifyByPlace";
 import VerifyById from "modules/dashboard/verifyById";
 import SupportChat from "modules/dashboard/supportChat";
-import { connect } from "react-redux";
-import { useRouter } from "next/router";
 import Ngo from "modules/dashboard/ngo";
+import Admin from "modules/dashboard/admin";
 
 const Panel = ({ signOutSuccess }) => {
+  const { access } = useSelector((state) => state.auth);
   const [collapsed, setCollapsed] = useState(false);
   const [currentTab, setCurrentTab] = useState("1");
   const router = useRouter();
@@ -39,6 +41,8 @@ const Panel = ({ signOutSuccess }) => {
       return <SupportChat />;
     } else if (tab === "7") {
       return <Ngo />;
+    } else if (tab === "8") {
+      return <Admin />;
     } else {
       return <Home />;
     }
@@ -65,7 +69,7 @@ const Panel = ({ signOutSuccess }) => {
           theme="light"
           defaultSelectedKeys={["1"]}
           mode="inline"
-          items={navData}
+          items={fetchAdminMenu(access)}
           onSelect={(e) => setCurrentTab(e.key)}
         />
       </Sider>

@@ -6,6 +6,7 @@ import {
   PictureOutlined,
   WechatOutlined,
   BankOutlined,
+  ControlOutlined,
 } from "@ant-design/icons";
 
 function getItem(label, key, icon, children) {
@@ -17,13 +18,23 @@ function getItem(label, key, icon, children) {
   };
 }
 
-export const navData = [
-  getItem("Home", "1", <HomeOutlined />),
-  getItem("Verification", "2", <UserOutlined />, [
+export const navData = {
+  verification: getItem("Verification", "2", <UserOutlined />, [
     getItem("Place", "3", <PictureOutlined />),
     getItem("Search", "4", <FileSearchOutlined />),
   ]),
-  getItem("News Update", "5", <DiffOutlined />),
-  getItem("Support Chat", "6", <WechatOutlined />),
-  getItem("Ngo ", "7", <BankOutlined />),
-];
+  news: getItem("News Update", "5", <DiffOutlined />),
+  supportChat: getItem("Support Chat", "6", <WechatOutlined />),
+  ngo: getItem("Ngo ", "7", <BankOutlined />),
+  admin: getItem("Admin Control", "8", <ControlOutlined />),
+};
+
+export const fetchAdminMenu = (access) => {
+  let accessList = [getItem("Home", "1", <HomeOutlined />)];
+  access.map((accessWord) => {
+    if (navData[accessWord]) {
+      accessList.push(navData[accessWord]);
+    }
+  });
+  return accessList;
+};

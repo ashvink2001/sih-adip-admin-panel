@@ -1,12 +1,13 @@
 import Panel from "layouts/panel";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { signOutSuccess } from "redux/actions/Auth";
-import { connect, useSelector } from "react-redux";
+import { signOutSuccess, updateAccess } from "redux/actions/Auth";
+import { connect } from "react-redux";
+import { onValue, ref } from "firebase/database";
+import { database } from "firebaseConfig/config";
 
-const Dashboard = () => {
+const Dashboard = ({ updateAccess, signOutSuccess, token, access }) => {
   const router = useRouter();
-  const { token } = useSelector((state) => state.auth);
 
   const setAutoLogout = (remainingTime) => {
     setTimeout(() => {
@@ -30,7 +31,18 @@ const Dashboard = () => {
     setAutoLogout(remainingMilliseconds);
   };
 
+  const fetchAccessList = (token) => {
+    onValue(ref(database, "admin/" + token), (snapshot) => {
+      const value = snapshot.val();
+      updateAccess(value.access);
+    });
+  };
+
   useEffect(() => {
+    if (access?.length === 0) {
+      fetchAccessList(token);
+    }
+
     if (!token) {
       router.push("/login");
     } else {
@@ -46,7 +58,9 @@ const Dashboard = () => {
   );
 };
 const mapStateToProps = ({ auth }) => {
-  const { token } = auth;
-  return { token };
+  const { token, access } = auth;
+  return { token, access };
 };
-export default connect(mapStateToProps, { signOutSuccess })(Dashboard);
+export default connect(mapStateToProps, { signOutSuccess, updateAccess })(
+  Dashboard
+);
