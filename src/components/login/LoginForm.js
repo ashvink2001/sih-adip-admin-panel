@@ -57,7 +57,7 @@ export const LoginForm = (props) => {
               authenticated(res.user.uid, value.access);
             }
           } else {
-            showAuthMessage("user not found");
+            showAuthMessage("user login request Rejected");
           }
         });
       })

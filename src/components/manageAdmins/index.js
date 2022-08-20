@@ -1,4 +1,4 @@
-import { Card, Modal, Table } from "antd";
+import { Card, Table } from "antd";
 import AvatarStatus from "components/AvatarStatus";
 import React from "react";
 
@@ -49,7 +49,7 @@ const ManageAdmin = ({ adminData }) => {
 
   return (
     <>
-      <Card title="Member Control" style={{ height: "30rem" }}>
+      <Card title="Admin List" style={{ height: "30rem" }}>
         <Table
           className="no-border-last"
           columns={tableColumns}

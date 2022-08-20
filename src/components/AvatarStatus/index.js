@@ -50,7 +50,12 @@ export const AvatarStatus = (props) => {
           <span>{suffix}</span>
         </div>
         {subTitle && (
-          <div className="text-muted avatar-status-subtitle">{subTitle}</div>
+          <div
+            className="text-muted avatar-status-subtitle"
+            style={{ width: "10rem" }}
+          >
+            {subTitle}
+          </div>
         )}
       </div>
     </div>
