@@ -10,7 +10,7 @@ import {
   signUpSuccess,
 } from "redux/actions/Auth";
 import { useRouter } from "next/router";
-import { push, ref, set } from "firebase/database";
+import { push, ref, set, update } from "firebase/database";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, database } from "firebaseConfig/config";
 import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
@@ -99,7 +99,7 @@ export const RegisterForm = (props) => {
       userId: userId,
       access: access,
       isApproved: false,
-      permissions: false,
+      permission: false,
     })
       .then((res) => {
         pushApprovalNode(userId);
@@ -109,7 +109,7 @@ export const RegisterForm = (props) => {
   };
 
   const pushApprovalNode = (adminId) => {
-    push(ref(database, "verifyAdmin/"), adminId).catch((err) =>
+    update(ref(database, "verifyAdmin/"), { [adminId]: adminId }).catch((err) =>
       console.log(err)
     );
   };
@@ -122,15 +122,8 @@ export const RegisterForm = (props) => {
         showLoading();
         createUserWithEmailAndPassword(auth, email, password)
           .then((res) => {
-            //     if (typeof window != "undefined") {
-            //       localStorage.setItem(AUTH_TOKEN, res.user.uid);
-
-            //       //expiryDate
-            //       var date = new Date();
-            //       date.setDate(date.getDate() + 1); // add a day
-            //       localStorage.setItem(EXPIRY_DATE, date);
-            //     }
             addUserData(res.user.uid, email, name, access);
+            router.push("/login");
           })
           .catch((err) => {
             showAuthMessage(err.code);
@@ -142,9 +135,6 @@ export const RegisterForm = (props) => {
   };
 
   useEffect(() => {
-    if (redirect) {
-      router.push(redirect);
-    }
     if (showMessage) {
       setTimeout(() => {
         hideAuthMessage();

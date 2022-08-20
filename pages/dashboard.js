@@ -34,7 +34,11 @@ const Dashboard = ({ updateAccess, signOutSuccess, token, access }) => {
   const fetchAccessList = (token) => {
     onValue(ref(database, "admin/" + token), (snapshot) => {
       const value = snapshot.val();
-      updateAccess(value.access);
+      if (value) {
+        updateAccess(value.access);
+      } else {
+        router.push("/login");
+      }
     });
   };
 

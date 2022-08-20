@@ -39,21 +39,25 @@ export const LoginForm = (props) => {
       .then((res) => {
         onValue(ref(database, "admin/" + res.user.uid), (snapshot) => {
           const value = snapshot.val();
-          if (!value.isApproved) {
-            showAuthMessage("Admin Need to Verify You Try later");
-          } else if (!value.permission) {
-            showAuthMessage("Need Permission To allow you contact admin");
-          } else {
-            if (typeof window != "undefined") {
-              localStorage.setItem(AUTH_TOKEN, res.user.uid);
+          if (value) {
+            if (!value.isApproved) {
+              showAuthMessage("Admin Need to Verify You Try later");
+            } else if (!value.permission) {
+              showAuthMessage("Need Permission To allow you contact admin");
+            } else {
+              if (typeof window != "undefined") {
+                localStorage.setItem(AUTH_TOKEN, res.user.uid);
 
-              //expiryDate
-              var date = new Date();
-              date.setDate(date.getDate() + 1); // add a day
-              localStorage.setItem(EXPIRY_DATE, date);
+                //expiryDate
+                var date = new Date();
+                date.setDate(date.getDate() + 1); // add a day
+                localStorage.setItem(EXPIRY_DATE, date);
+              }
+
+              authenticated(res.user.uid, value.access);
             }
-
-            authenticated(res.user.uid, value.access);
+          } else {
+            showAuthMessage("user not found");
           }
         });
       })

@@ -54,8 +54,6 @@ const auth = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        //token: action.token,
-        redirect: "/login",
       };
     }
     case SHOW_LOADING: {
