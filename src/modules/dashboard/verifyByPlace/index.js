@@ -30,7 +30,7 @@ const VerifyByPlace = () => {
           userIdList.map((id) => {
             let value = snapshot.val()[id];
             let requestList = Object.values(value.requestStatus)?.filter(
-              (request) => !request.verified && !request.verified
+              (request) => !request.verified && !request.notAppropriate
             );
             requestList.map((requestStatus) => {
               arr.push({
