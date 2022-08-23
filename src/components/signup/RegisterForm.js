@@ -19,7 +19,7 @@ const currentRoles = [
   { label: "Verification Page", value: "verification" },
   { label: "News Update Page", value: "news" },
   { label: "SupportChat Page", value: "supportChat" },
-  { label: "Ngo Manage Page", value: "ngo" },
+  { label: "Agency Manage Page", value: "ngo" },
   { label: "Admin Page", value: "admin" },
 ];
 

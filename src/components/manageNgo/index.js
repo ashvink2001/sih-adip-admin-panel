@@ -57,7 +57,7 @@ const ManageNgo = ({ ngoDetails }) => {
               "/" +
               details.campId
           )
-        ).then(() => alert("Ngo Removed please refresh"));
+        ).then(() => alert("Agency Removed please refresh"));
       })
       .catch((err) => {
         console.log(err);
@@ -69,7 +69,7 @@ const ManageNgo = ({ ngoDetails }) => {
       <Card
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div>Ngo Details</div>
+            <div>Agency Details</div>
             <div>
               Id: {ngoDetails?.campId}
               <CopyToClipboard
@@ -215,7 +215,7 @@ const ManageNgo = ({ ngoDetails }) => {
               >
                 {ngoDetails.campId
                   ? "Are You Sure ?"
-                  : "Please Select Ngo Camp"}
+                  : "Please Select Agency Camp"}
               </Button>
             </DataDisplayWidget>
           </Col>

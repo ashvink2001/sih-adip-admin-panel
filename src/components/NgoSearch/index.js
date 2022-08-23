@@ -87,7 +87,7 @@ const NgoSearch = ({ onSearchSubmit }) => {
         size="large"
         style={{ width: "20rem" }}
         showSearch
-        placeholder="Please Select the Ngo Camp"
+        placeholder="Please Select the Agency Camp"
         disabled={selectedDistrict === ""}
         optionFilterProp="children"
         onChange={(value) => setSelectedCamp(value)}

@@ -25,7 +25,7 @@ export const navData = {
   ]),
   news: getItem("News Update", "5", <DiffOutlined />),
   supportChat: getItem("Support Chat", "6", <WechatOutlined />),
-  ngo: getItem("Ngo ", "7", <BankOutlined />),
+  ngo: getItem("Agency ", "7", <BankOutlined />),
   admin: getItem("Admin Control", "8", <ControlOutlined />),
 };
 

@@ -210,18 +210,18 @@ const VerificationForm = ({
                       }}
                       align="baseline"
                     >
-                      <label>Add Ngo Detail :</label>
+                      <label>Add Agency Detail :</label>
                       <Form.Item
                         {...restField}
                         name={[name, "ngoId"]}
                         rules={[
                           {
                             required: true,
-                            message: "Missing Ngo Id",
+                            message: "Missing Agency Id",
                           },
                         ]}
                       >
-                        <Input placeholder="Ngo Id" />
+                        <Input placeholder="Agency Id" />
                       </Form.Item>
                       <Form.Item
                         {...restField}

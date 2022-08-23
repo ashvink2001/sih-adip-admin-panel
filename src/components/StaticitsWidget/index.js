@@ -85,7 +85,7 @@ const StaticsWidget = () => {
         <DataDisplayWidget
           icon={<HomeOutlined />}
           value={staticsData.ngoCount}
-          title="No of Registered Ngo"
+          title="No of Registered Agency"
           color="blue"
           vertical={true}
           avatarSize={55}
