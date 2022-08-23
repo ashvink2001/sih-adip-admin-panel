@@ -40,7 +40,7 @@ const ManageNgo = ({ ngoDetails }) => {
       emailId: values.emailId,
       password: values.password,
     })
-      .then(() => alert("updated successfully please refresh"))
+      .then(() => alert("updated successfully "))
       .catch((err) => console.log(err));
   };
 
@@ -57,7 +57,7 @@ const ManageNgo = ({ ngoDetails }) => {
               "/" +
               details.campId
           )
-        ).then(() => alert("Agency Removed please refresh"));
+        ).then(() => alert("Agency Removed "));
       })
       .catch((err) => {
         console.log(err);

@@ -7,6 +7,7 @@ const ManageAdmin = ({ adminData }) => {
     {
       title: "Member Name",
       dataIndex: "name",
+      width: 150,
       key: "name",
       render: (data) => (
         <div className="d-flex align-items-center">
@@ -17,6 +18,7 @@ const ManageAdmin = ({ adminData }) => {
     {
       title: "Admin Id",
       dataIndex: "userId",
+      width: 300,
       key: "userId",
       render: (data) => <div className="d-flex align-items-center">{data}</div>,
     },
@@ -24,12 +26,14 @@ const ManageAdmin = ({ adminData }) => {
     {
       title: "Email",
       dataIndex: "email",
+      width: 150,
       key: "email",
       render: (data) => <div className="d-flex align-items-center">{data}</div>,
     },
     {
       title: "Given Access",
       dataIndex: "access",
+      width: 200,
       key: "access",
       render: (data) => (
         <div className="d-flex align-items-center">{data.join(" - ")}</div>
@@ -39,6 +43,7 @@ const ManageAdmin = ({ adminData }) => {
       title: "Permission",
       dataIndex: "permission",
       key: "permission",
+      width: 100,
       render: (data) => (
         <div className="d-flex align-items-center">
           {data ? "Allowed" : "Not Allowed"}
@@ -56,6 +61,10 @@ const ManageAdmin = ({ adminData }) => {
           dataSource={adminData}
           rowKey="userId"
           pagination={true}
+          scroll={{
+            x: 1000,
+            y: 300,
+          }}
         />
       </Card>
     </>

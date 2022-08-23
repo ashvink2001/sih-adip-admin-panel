@@ -104,7 +104,7 @@ const Panel = ({ signOutSuccess }) => {
             textAlign: "center",
           }}
         >
-          ADIP Dashboard ©2022
+          ADIP Dashboard for SIH
         </Footer>
       </Layout>
     </Layout>

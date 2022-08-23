@@ -56,7 +56,7 @@ const Ngo = () => {
                 nogDetail.aidsData && Object.entries(nogDetail.aidsData)
               }
               renderItem={(item) => (
-                <List.Item>
+                <List.Item style={{ wordWrap: "break-word" }}>
                   {item[0]} : {item[1]}
                 </List.Item>
               )}

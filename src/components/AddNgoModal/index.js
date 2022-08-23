@@ -47,7 +47,7 @@ const AddNgoModal = () => {
     <div>
       <DataDisplayWidget
         icon={<UsergroupAddOutlined />}
-        value="Add  NGO Account"
+        value="Add  Agency Account"
         color="red"
         vertical={true}
         avatarSize={55}

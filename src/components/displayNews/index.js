@@ -52,13 +52,6 @@ const DisplayNews = () => {
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>Top News</div>
-            <Button
-              type="primary"
-              icon={<ReloadOutlined />}
-              onClick={() => fetchNews()}
-            >
-              Refresh
-            </Button>
           </div>
         }
       >

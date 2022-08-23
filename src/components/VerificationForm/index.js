@@ -46,6 +46,7 @@ const VerificationForm = ({
   handleApproved,
   handleNotApproved,
 }) => {
+  const [form] = Form.useForm();
   const incomeTaxCertificateUrl = userData.requestStatus.incomeCertificate;
   const [status, setStatus] = useState("");
   const [remark, setRemark] = useState(userData.requestStatus?.message || "");
@@ -197,6 +198,7 @@ const VerificationForm = ({
             name="dynamic_form_nest_item"
             onFinish={handleApproved}
             autoComplete="off"
+            form={form}
           >
             <Form.List name="ngo">
               {(fields, { add, remove }) => (
@@ -276,7 +278,10 @@ const VerificationForm = ({
                   </Button>
                   <Button
                     key="cancel"
-                    onClick={() => setModalVisible(false)}
+                    onClick={() => {
+                      form.resetFields();
+                      setModalVisible(false);
+                    }}
                     danger
                     type="primary"
                   >

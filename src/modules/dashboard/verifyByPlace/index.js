@@ -55,7 +55,7 @@ const VerifyByPlace = () => {
     <div>
       <Card
         title="Need To Verify"
-        style={{ height: "90%", width: "100%", marginTop: "2rem" }}
+        style={{ height: "90%", width: "100%", marginTop: "1rem" }}
       >
         <div style={{ margin: "3rem 0rem 4rem 0rem" }}>
           <StateHeader onSearchSubmit={onSearchSubmit} />
