@@ -7,6 +7,9 @@ import {
   WechatOutlined,
   BankOutlined,
   ControlOutlined,
+  FilePdfOutlined,
+  PlusCircleOutlined,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 
 function getItem(label, key, icon, children) {
@@ -19,7 +22,25 @@ function getItem(label, key, icon, children) {
 }
 
 export const navData = {
-  verification: getItem("Verification", "2", <UserOutlined />, [
+  documentVerification: getItem(
+    "DocumentVerification",
+    "9",
+    <FilePdfOutlined />,
+    [
+      getItem("Place", "3", <PictureOutlined />),
+      getItem("Search", "4", <FileSearchOutlined />),
+    ]
+  ),
+  doctorVerification: getItem(
+    "DoctorVerification",
+    "10",
+    <PlusCircleOutlined />,
+    [
+      getItem("Place", "3", <PictureOutlined />),
+      getItem("Search", "4", <FileSearchOutlined />),
+    ]
+  ),
+  ngoAllotment: getItem("AgencyVerification", "11", <UserSwitchOutlined />, [
     getItem("Place", "3", <PictureOutlined />),
     getItem("Search", "4", <FileSearchOutlined />),
   ]),
