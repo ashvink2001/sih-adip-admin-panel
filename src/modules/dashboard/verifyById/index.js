@@ -2,11 +2,12 @@ import { Card } from "antd";
 import { onValue, ref } from "firebase/database";
 import React, { useState } from "react";
 
-import VerifyTable from "components/verifyTable";
 import { database } from "firebaseConfig/config";
 import SearchHeader from "components/searchHeader";
+import VerifyDocumentTable from "components/verifyDocumentTable";
+import VerifyDoctorTable from "components/verifyDoctorTable";
 
-const VerifyById = () => {
+const VerifyById = ({ verificationType }) => {
   const [verifyList, setVerifyList] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
 
@@ -38,11 +39,24 @@ const VerifyById = () => {
           "USERS/" + placeDetail.state + "/" + placeDetail.district + "/"
         ),
         (snapshot) => {
-          console.log(snapshot.val());
           let value = snapshot.val()[placeDetail.userId];
-          let requestList = Object.values(value.requestStatus)?.filter(
-            (request) => !request.verified && !request.verified
-          );
+          let requestList = [];
+          if (verificationType === "doctorVerification") {
+            requestList = Object.values(value.requestStatus)?.filter(
+              (request) =>
+                request.documentVerification &&
+                !request.notAppropriate &&
+                !request.doctorVerification
+            );
+          } else {
+            requestList = Object.values(value.requestStatus)?.filter(
+              (request) =>
+                !request.documentVerification &&
+                !request.notAppropriate &&
+                !request.doctorVerification
+            );
+          }
+
           requestList.map((requestStatus) => {
             setVerifyList([
               {
@@ -74,9 +88,20 @@ const VerifyById = () => {
 
   return (
     <div style={{ marginTop: "1rem" }}>
-      <Card title="Need To Verify" style={{ height: "90%", width: "100%" }}>
+      <Card
+        title={
+          verificationType === "doctorVerification"
+            ? "Doctor Verification"
+            : "Document Verification"
+        }
+        style={{ height: "90%", width: "100%" }}
+      >
         <SearchHeader onSearchSubmit={onSearchSubmit} />
-        <VerifyTable list={verifyList} loadingStatus={loadingData} />
+        {verificationType === "doctorVerification" ? (
+          <VerifyDoctorTable list={verifyList} loadingStatus={loadingData} />
+        ) : (
+          <VerifyDocumentTable list={verifyList} loadingStatus={loadingData} />
+        )}
       </Card>
     </div>
   );

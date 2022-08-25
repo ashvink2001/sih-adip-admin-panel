@@ -40,7 +40,7 @@ const prevIcons = {
   right: <RightOutlined style={{ color: "#ffff", fontSize: "1.6rem" }} />,
 };
 
-const VerificationForm = ({
+const DoctorVerificationForm = ({
   userData,
   setModalVisible,
   handleApproved,
@@ -297,4 +297,4 @@ const VerificationForm = ({
   );
 };
 
-export default VerificationForm;
+export default DoctorVerificationForm;

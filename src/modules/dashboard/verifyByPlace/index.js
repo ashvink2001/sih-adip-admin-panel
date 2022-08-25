@@ -3,10 +3,11 @@ import { onValue, ref } from "firebase/database";
 import React, { useState } from "react";
 
 import StateHeader from "components/StateHeader";
-import VerifyTable from "components/verifyTable";
 import { database } from "firebaseConfig/config";
+import VerifyDoctorTable from "components/verifyDoctorTable";
+import VerifyDocumentTable from "components/verifyDocumentTable";
 
-const VerifyByPlace = () => {
+const VerifyByPlace = ({ verificationType }) => {
   const [verifyList, setVerifyList] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
 
@@ -29,9 +30,24 @@ const VerifyByPlace = () => {
           const arr = [];
           userIdList.map((id) => {
             let value = snapshot.val()[id];
-            let requestList = Object.values(value.requestStatus)?.filter(
-              (request) => !request.verified && !request.notAppropriate
-            );
+            let requestList = [];
+
+            if (verificationType === "doctorVerification") {
+              requestList = Object.values(value.requestStatus)?.filter(
+                (request) =>
+                  request.documentVerification &&
+                  !request.notAppropriate &&
+                  !request.doctorVerification
+              );
+            } else {
+              requestList = Object.values(value.requestStatus)?.filter(
+                (request) =>
+                  !request.documentVerification &&
+                  !request.notAppropriate &&
+                  !request.doctorVerification
+              );
+            }
+
             requestList.map((requestStatus) => {
               arr.push({
                 ...snapshot.val()[id],
@@ -41,7 +57,6 @@ const VerifyByPlace = () => {
               });
             });
           });
-          console.log(arr);
           setVerifyList(arr);
           setLoadingData(false);
         }
@@ -54,7 +69,11 @@ const VerifyByPlace = () => {
   return (
     <div>
       <Card
-        title="Need To Verify"
+        title={
+          verificationType === "doctorVerification"
+            ? "Doctor Verification"
+            : "Document Verification"
+        }
         style={{ height: "90%", width: "100%", marginTop: "1rem" }}
       >
         <div style={{ margin: "3rem 0rem 4rem 0rem" }}>
@@ -62,7 +81,14 @@ const VerifyByPlace = () => {
         </div>
 
         <div style={{ marginTop: "2rem" }}>
-          <VerifyTable list={verifyList} loadingStatus={loadingData} />
+          {verificationType === "doctorVerification" ? (
+            <VerifyDoctorTable list={verifyList} loadingStatus={loadingData} />
+          ) : (
+            <VerifyDocumentTable
+              list={verifyList}
+              loadingStatus={loadingData}
+            />
+          )}
         </div>
       </Card>
     </div>

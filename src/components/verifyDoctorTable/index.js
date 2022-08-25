@@ -2,12 +2,12 @@ import { Button, Modal, Table } from "antd";
 import AvatarStatus from "components/AvatarStatus";
 import { UserAddOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import VerificationForm from "components/VerificationForm";
 import { database } from "firebaseConfig/config";
-import { onValue, ref, remove, set, update } from "firebase/database";
+import { onValue, ref, set, update } from "firebase/database";
 import { useSelector } from "react-redux";
+import DoctorVerificationForm from "components/DoctorVerificationForm";
 
-const VerifyTable = ({ list, loadingStatus }) => {
+const VerifyDoctorTable = ({ list, loadingStatus }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const { token } = useSelector((state) => state.auth);
@@ -201,7 +201,7 @@ const VerifyTable = ({ list, loadingStatus }) => {
         footer={null}
         width={1000}
       >
-        <VerificationForm
+        <DoctorVerificationForm
           userData={selectedUser}
           setModalVisible={setModalVisible}
           handleApproved={handleApproved}
@@ -212,4 +212,4 @@ const VerifyTable = ({ list, loadingStatus }) => {
   );
 };
 
-export default VerifyTable;
+export default VerifyDoctorTable;

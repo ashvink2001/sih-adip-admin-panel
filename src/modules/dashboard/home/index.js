@@ -3,8 +3,10 @@ import Banner from "components/Banner";
 import ModalList from "components/createList";
 import StaticsWidget from "components/StaticitsWidget";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { access } = useSelector((state) => state.auth);
   return (
     <>
       <Row gutter={16} style={{ marginTop: "1rem" }}>
@@ -17,7 +19,7 @@ const Home = () => {
       </Row>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={8} xl={15} xxl={14}>
-          <ModalList />
+          {access.includes("admin") && <ModalList />}
         </Col>
       </Row>
     </>

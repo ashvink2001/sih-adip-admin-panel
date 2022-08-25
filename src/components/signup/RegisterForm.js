@@ -10,15 +10,15 @@ import {
   signUpSuccess,
 } from "redux/actions/Auth";
 import { useRouter } from "next/router";
-import { push, ref, set, update } from "firebase/database";
+import { ref, set, update } from "firebase/database";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, database } from "firebaseConfig/config";
-import { AUTH_TOKEN, EXPIRY_DATE } from "redux/constants/Auth";
 
 const currentRoles = [
-  { label: "Verification Page", value: "verification" },
+  { label: "Document Verification Page", value: "documentVerification" },
   { label: "News Update Page", value: "news" },
   { label: "SupportChat Page", value: "supportChat" },
+  { label: "Doctor Verification Page", value: "doctorVerification" },
   { label: "Agency Manage Page", value: "ngo" },
   { label: "Admin Page", value: "admin" },
 ];

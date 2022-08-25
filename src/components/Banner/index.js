@@ -4,8 +4,11 @@ import { database } from "firebaseConfig/config";
 import React, { useEffect, useState } from "react";
 
 import { DeleteOutlined, LinkOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 const Banner = () => {
+  const { access } = useSelector((state) => state.auth);
+
   const [bannerData, setBannerData] = useState([]);
   useEffect(() => {
     fetchBanner();
@@ -51,26 +54,28 @@ const Banner = () => {
                   backgroundColor: "red",
                 }}
               >
-                <div className="banner-action">
-                  <Button
-                    type="primary"
-                    href={data.contentUrl}
-                    icon={<LinkOutlined />}
-                    style={{
-                      marginRight: "8rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    target="_blank"
-                  />
-                  <Button
-                    type="primary"
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={() => deleteBanner(data.id)}
-                  />
-                </div>
+                {access.includes("admin") && (
+                  <div className="banner-action">
+                    <Button
+                      type="primary"
+                      href={data.contentUrl}
+                      icon={<LinkOutlined />}
+                      style={{
+                        marginRight: "8rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      target="_blank"
+                    />
+                    <Button
+                      type="primary"
+                      danger
+                      icon={<DeleteOutlined />}
+                      onClick={() => deleteBanner(data.id)}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))}

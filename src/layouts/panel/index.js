@@ -32,9 +32,9 @@ const Panel = ({ signOutSuccess }) => {
 
   const renderContent = (tab) => {
     if (tab === "3") {
-      return <VerifyByPlace />;
+      return <VerifyByPlace verificationType={"documentVerification"} />;
     } else if (tab === "4") {
-      return <VerifyById />;
+      return <VerifyById verificationType={"documentVerification"} />;
     } else if (tab === "5") {
       return <News />;
     } else if (tab === "6") {
@@ -43,6 +43,10 @@ const Panel = ({ signOutSuccess }) => {
       return <Ngo />;
     } else if (tab === "8") {
       return <Admin />;
+    } else if (tab === "13") {
+      return <VerifyByPlace verificationType={"doctorVerification"} />;
+    } else if (tab === "14") {
+      return <VerifyById verificationType={"doctorVerification"} />;
     } else {
       return <Home />;
     }

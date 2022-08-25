@@ -23,7 +23,7 @@ function getItem(label, key, icon, children) {
 
 export const navData = {
   documentVerification: getItem(
-    "DocumentVerification",
+    "Document Verification",
     "9",
     <FilePdfOutlined />,
     [
@@ -32,18 +32,14 @@ export const navData = {
     ]
   ),
   doctorVerification: getItem(
-    "DoctorVerification",
-    "10",
+    "Doctor Verification",
+    "12",
     <PlusCircleOutlined />,
     [
-      getItem("Place", "3", <PictureOutlined />),
-      getItem("Search", "4", <FileSearchOutlined />),
+      getItem("Place", "13", <PictureOutlined />),
+      getItem("Search", "14", <FileSearchOutlined />),
     ]
   ),
-  ngoAllotment: getItem("AgencyVerification", "11", <UserSwitchOutlined />, [
-    getItem("Place", "3", <PictureOutlined />),
-    getItem("Search", "4", <FileSearchOutlined />),
-  ]),
   news: getItem("News Update", "5", <DiffOutlined />),
   supportChat: getItem("Support Chat", "6", <WechatOutlined />),
   ngo: getItem("Agency ", "7", <BankOutlined />),
