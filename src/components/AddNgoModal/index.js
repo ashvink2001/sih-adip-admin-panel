@@ -54,7 +54,7 @@ const AddNgoModal = () => {
       >
         <Button onClick={() => setIsModalVisible(true)}>Add Account ?</Button>
         <Modal
-          title="Add New NGO"
+          title="Add New Agency"
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           footer={null}
