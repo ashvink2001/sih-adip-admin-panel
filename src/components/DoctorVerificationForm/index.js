@@ -7,7 +7,6 @@ import {
   Input,
   Row,
   Select,
-  Space,
   Tag,
 } from "antd";
 import React, { useState } from "react";
@@ -19,9 +18,10 @@ import {
   CloseOutlined,
   LeftOutlined,
   RightOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
 } from "@ant-design/icons";
+import { onValue, ref } from "firebase/database";
+import { database } from "firebaseConfig/config";
+import { distanceFind } from "components/autoNgo";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -47,9 +47,83 @@ const DoctorVerificationForm = ({
   handleNotApproved,
 }) => {
   const [form] = Form.useForm();
-  const incomeTaxCertificateUrl = userData.requestStatus.incomeCertificate;
   const [status, setStatus] = useState("");
   const [remark, setRemark] = useState(userData.requestStatus?.message || "");
+  const [campList, setCampList] = useState();
+
+  const { disabilityCertificateURL } = userData.requestStatus.aidsDocs;
+
+  const generatedNgo = (ngoValues) => {
+    let finalCamp = { ngo: [] };
+    ngoValues.map((ngo) => {
+      finalCamp.ngo.push({
+        ngoId: ngo.camp.campId,
+        aidsReceived: false,
+        aidsList: [ngo.name],
+      });
+    });
+    handleApproved(finalCamp);
+  };
+
+  function generateAgency(values) {
+    let tempCampList = [];
+
+    onValue(ref(database, "CAMPING/"), (snapshot) => {
+      for (let camp of Object.values(snapshot.val()))
+        if (
+          camp.location !== undefined &&
+          // camp.state === userData.state &&
+          camp.aidsData !== undefined
+        ) {
+          tempCampList.push({
+            campId: camp.campId,
+            location: camp.location,
+            state: camp.state,
+            district: camp.district,
+            aidsData: camp.aidsData,
+          });
+        }
+      setCampList(tempCampList);
+      // nearCamp = tempCampList.find(
+      //   (camp) => camp.district === userData.district
+      // );
+      manipulateData(userData.location, values);
+    });
+  }
+
+  function manipulateData(userLocation, aidsList) {
+    //Below lat lng data is assumed to be our camp
+    let lat = parseInt(userLocation.lat);
+    let long = parseInt(userLocation.lng);
+    //This will store camp-id and the distance from current lat , lng
+    let tempArr = [];
+    let aidArr = [];
+    if (campList === undefined) {
+      campList = [];
+    }
+    for (let camp of campList) {
+      tempArr.push(
+        distanceFind(lat, long, camp.location.lat, camp.location.lng, camp)
+      );
+    }
+
+    tempArr.sort((a, b) => a.distance - b.distance);
+    aidsList.aidsList?.forEach((userAid) => {
+      campSort: for (let camp of tempArr) {
+        let tempAid;
+        for (let campAid of Object.keys(camp.aidsData)) {
+          if (campAid === userAid) {
+            aidArr.push({ name: userAid, camp });
+            tempAid = userAid;
+            break campSort;
+          }
+        }
+      }
+    });
+    if (aidArr.length > 0) {
+      generatedNgo(aidArr);
+    }
+  }
 
   return (
     <div style={{ marginBottom: "3rem" }}>
@@ -90,8 +164,10 @@ const DoctorVerificationForm = ({
               : "Not Yet Received"}
           </Col>
           <Col>
-            Verified :{" "}
-            {userData.requestStatus.verified ? "Verified" : "Not Yet Verified"}
+            Document Verified :{" "}
+            {userData.requestStatus.documentVerified
+              ? "Verified"
+              : "Not Yet Verified"}
           </Col>
           <Col>
             Not Appropriate :{" "}
@@ -100,17 +176,13 @@ const DoctorVerificationForm = ({
         </Col>
       </Row>
       <div style={{ fontSize: "1.4rem", margin: "3rem 0rem 2.5rem 0rem" }}>
-        Requested Equipments Details
+        User Disability Category
       </div>
       <Row>
-        {userData?.requestStatus?.aidsList?.map((aid) => (
-          <Col key={aid}>
-            <Tag color="success" style={{ margin: ".4rem" }}>
-              {" "}
-              {aid}
-            </Tag>
-          </Col>
-        ))}
+        <Tag color="success" style={{ margin: ".4rem" }}>
+          {" "}
+          {userData.disabilityCategory}
+        </Tag>
       </Row>
       <div style={{ fontSize: "1.4rem", margin: "4rem 0rem 2rem 0rem" }}>
         Document Details
@@ -121,12 +193,12 @@ const DoctorVerificationForm = ({
         style={{ marginBottom: "2.5rem" }}
       >
         <Col>
-          <Col style={{ textAlign: "center" }}>IncomeTax Proof</Col>
+          <Col style={{ textAlign: "center" }}>User Disability Proof</Col>
           <Col style={{ marginTop: "1.5rem" }}>
             <Image
               width={250}
               height={250}
-              src={incomeTaxCertificateUrl}
+              src={disabilityCertificateURL}
               alt="IncomeTax proof"
               preview={{
                 icons: prevIcons,
@@ -145,7 +217,7 @@ const DoctorVerificationForm = ({
         style={{ width: "50%", marginBottom: "3rem" }}
         placeholder="Select The Verification Status"
       >
-        <Option value="approved">Verified & Give Approved</Option>
+        <Option value="approved">Verified and add Aid</Option>
         <Option value="notApproved">Inappropriate Data & Not Approved</Option>
       </Select>
       {status === "notApproved" ? (
@@ -196,85 +268,41 @@ const DoctorVerificationForm = ({
         status === "approved" && (
           <Form
             name="dynamic_form_nest_item"
-            onFinish={handleApproved}
+            onFinish={generateAgency}
             autoComplete="off"
             form={form}
           >
-            <Form.List name="ngo">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map(({ key, name, ...restField }) => (
-                    <Space
-                      key={key}
-                      style={{
-                        display: "flex",
-                        marginBottom: 8,
-                      }}
-                      align="baseline"
-                    >
-                      <label>Add Agency Detail :</label>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "ngoId"]}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Missing Agency Id",
-                          },
-                        ]}
-                      >
-                        <Input placeholder="Agency Id" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "aidsList"]}
-                        style={{ width: "16rem" }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Missing Aid List",
-                          },
-                        ]}
-                      >
-                        <Select
-                          placeholder="Select Aid List"
-                          mode="multiple"
-                          allowClear
-                        >
-                          {userData.requestStatus.aidsList?.map((aid) => (
-                            <Option key={aid} value={aid}>
-                              {aid}
-                            </Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                      <MinusCircleOutlined onClick={() => remove(name)} />
-                    </Space>
-                  ))}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      style={{ width: "30rem", marginLeft: "5.7rem" }}
-                      icon={<PlusOutlined />}
-                    >
-                      Add Ngos
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
+            <Form.Item
+              label="Select Aid List"
+              name={"aidsList"}
+              style={{ width: "60%" }}
+              rules={[
+                {
+                  required: true,
+                  message: "Missing Aid List",
+                },
+              ]}
+            >
+              <Select placeholder="Select Aid List" mode="multiple" allowClear>
+                {userData.requestStatus.aidsList?.map((aid) => (
+                  <Option key={aid} value={aid}>
+                    {aid.split("_").join(" ")}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
             <Form.Item>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <div
                   style={{
-                    width: "25%",
+                    width: "35%",
                     display: "flex",
                     justifyContent: "space-between",
                   }}
                 >
                   <Button key="submit" type="primary" htmlType="submit">
-                    Submit
+                    Verified & Allocate
                   </Button>
                   <Button
                     key="cancel"

@@ -36,10 +36,10 @@ const VerifyDoctorTable = ({ list, loadingStatus }) => {
           key
       ),
       {
-        verified: true,
+        doctorVerification: true,
         notAppropriate: false,
         message: "verified Success soon equipment dispatch",
-        verifierId: token,
+        doctorId: token,
         ngoList: obj,
       }
     )
@@ -52,7 +52,6 @@ const VerifyDoctorTable = ({ list, loadingStatus }) => {
 
     for (let ngo of values.ngo) {
       await onValue(ref(database, "CAMPING/" + ngo.ngoId), (snapshot) => {
-        console.log(snapshot.val());
         let { state: ngoState, district: ngoDistrict } = snapshot.val();
         set(
           ref(

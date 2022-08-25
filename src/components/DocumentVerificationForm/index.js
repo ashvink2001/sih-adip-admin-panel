@@ -52,10 +52,15 @@ const DocumentVerificationForm = ({
   const [remark, setRemark] = useState(userData.requestStatus?.message || "");
 
   const handleSubmit = () => {
-    if (status) {
+    console.log(status);
+    if (status === "approved") {
       handleApproved();
-    } else {
+      setStatus("");
+      setRemark("");
+    } else if (status === "notApproved" && remark) {
       handleNotApproved(remark);
+      setStatus("");
+      setRemark("");
     }
   };
 
@@ -216,17 +221,15 @@ const DocumentVerificationForm = ({
             justifyContent: "space-between",
           }}
         >
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() => handleNotApproved(remark)}
-          >
+          <Button key="submit" type="primary" onClick={() => handleSubmit()}>
             Submit
           </Button>
           <Button
             key="cancel"
             type="primary"
-            onClick={() => setModalVisible(false)}
+            onClick={() => {
+              setModalVisible(false);
+            }}
             danger
           >
             Cancel

@@ -4,7 +4,7 @@ import { UserAddOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import DocumentVerificationForm from "components/DocumentVerificationForm";
 import { database } from "firebaseConfig/config";
-import { onValue, ref, set, update } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { useSelector } from "react-redux";
 
 const VerifyDocumentTable = ({ list, loadingStatus }) => {
@@ -12,17 +12,9 @@ const VerifyDocumentTable = ({ list, loadingStatus }) => {
   const [selectedUser, setSelectedUser] = useState();
   const { token } = useSelector((state) => state.auth);
 
-  const handleApproved = async (values) => {
+  const handleApproved = async () => {
     const { state, district, userId, key } = selectedUser;
     //verify,message,add nog list
-    let obj = {};
-    Object.values(values.ngo).map(
-      (value) =>
-        (obj[Math.floor(100000 + Math.random() * 900000)] = {
-          ...value,
-          aidsReceived: false,
-        })
-    );
     await update(
       ref(
         database,
@@ -36,14 +28,15 @@ const VerifyDocumentTable = ({ list, loadingStatus }) => {
           key
       ),
       {
-        documentVerification: true,
+        documentVerified: true,
         notAppropriate: false,
-        message: "verified Success soon equipment dispatch",
+        message: "document verified",
         verifierId: token,
       }
     )
-      .then(async () => {
+      .then(() => {
         setModalVisible(false);
+        setSelectedUser([]);
       })
       .catch((err) => console.log(err));
   };
@@ -70,6 +63,7 @@ const VerifyDocumentTable = ({ list, loadingStatus }) => {
     )
       .then(() => {
         setModalVisible(false);
+        setSelectedUser([]);
         //aid list remove the aid that are rejected
       })
       .catch((err) => console.log(err));

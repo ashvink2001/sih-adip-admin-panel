@@ -44,19 +44,18 @@ const VerifyById = ({ verificationType }) => {
           if (verificationType === "doctorVerification") {
             requestList = Object.values(value.requestStatus)?.filter(
               (request) =>
-                request.documentVerification &&
+                request.documentVerified &&
                 !request.notAppropriate &&
                 !request.doctorVerification
             );
           } else {
             requestList = Object.values(value.requestStatus)?.filter(
               (request) =>
-                !request.documentVerification &&
+                !request.documentVerified &&
                 !request.notAppropriate &&
                 !request.doctorVerification
             );
           }
-
           requestList.map((requestStatus) => {
             setVerifyList([
               {
