@@ -15,10 +15,11 @@ const VerifyDoctorTable = ({ list, loadingStatus }) => {
   const handleApproved = async (values) => {
     const { state, district, userId, udidNo, fcmToken, key } = selectedUser;
     //verify,message,add nog list
+
     let obj = {};
     Object.values(values.ngo).map(
       (value) =>
-        (obj[key] = {
+        (obj[Math.floor(100000 + Math.random() * 900000)] = {
           ...value,
           aidsReceived: false,
         })
