@@ -13,12 +13,20 @@ const VerifyDoctorTable = ({ list, loadingStatus }) => {
   const { token } = useSelector((state) => state.auth);
 
   const handleApproved = async (values) => {
-    const { state, district, userId, udidNo, fcmToken, key } = selectedUser;
+    const {
+      state,
+      district,
+      userId,
+      udidNo,
+      fcmToken,
+      key,
+      appliedOnTimeStamp,
+    } = selectedUser;
     //verify,message,add nog list
     let obj = {};
     Object.values(values.ngo).map(
       (value) =>
-        (obj[Math.floor(100000 + Math.random() * 900000)] = {
+        (obj[appliedOnTimeStamp] = {
           ...value,
           aidsReceived: false,
         })
