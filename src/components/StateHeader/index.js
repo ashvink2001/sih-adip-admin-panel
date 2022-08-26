@@ -1,13 +1,144 @@
-import { Button, Form, Select, Tooltip } from "antd";
+import { Button, Dropdown, Form, Menu, Select, Tooltip } from "antd";
 import React, { useState } from "react";
 import { detail } from "utils/stateData/data";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
-const StateHeader = ({ onSearchSubmit }) => {
+const StateHeader = ({ onSearchSubmit, setFilterOptions, filterOption }) => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: "Gender",
+          children: [
+            {
+              key: "1-1",
+              label: "Male",
+              onClick: () => {
+                let arr = filterOption;
+                setFilterOptions((prevState) => ({
+                  ...arr,
+                  gender: "male",
+                }));
+              },
+            },
+            {
+              key: "1-2",
+              label: "Female",
+              onClick: () => {
+                let arr = filterOption;
+                setFilterOptions((prevState) => ({
+                  ...arr,
+                  gender: "female",
+                }));
+              },
+            },
+            {
+              key: "1-3",
+              label: "Other",
+              onClick: () => {
+                setFilterOptions((prevState) => ({
+                  ...prevState,
+                  gender: "other",
+                }));
+              },
+            },
+            {
+              key: "1-4",
+              label: "All",
+              onClick: () => {
+                setFilterOptions((prevState) => ({
+                  ...prevState,
+                  gender: "all",
+                }));
+              },
+            },
+          ],
+        },
+        {
+          key: "2",
+          label: "Date of Birth",
+          children: [
+            {
+              key: "2-1",
+              label: "Ascending",
+              onClick: () => {
+                setFilterOptions((prevState) => ({
+                  ...prevState,
+                  dob: "ascending",
+                }));
+              },
+            },
+            {
+              key: "2-2",
+              label: "Descending",
+              onClick: () => {
+                setFilterOptions((prevState) => ({
+                  ...prevState,
+                  dob: "descending",
+                }));
+              },
+            },
+            {
+              key: "2-3",
+              label: "None",
+              onClick: () => {
+                setFilterOptions((prevState) => ({
+                  ...prevState,
+                  dob: "none",
+                }));
+              },
+            },
+          ],
+        },
+        {
+          key: "3",
+          label: "Caste",
+          children: [
+            {
+              key: "3-1",
+              label: "SC/BC",
+              onClick: () => {
+                let arr = filterOption;
+                setFilterOptions({
+                  ...arr,
+                  caste: "sc/st/other",
+                });
+              },
+            },
+            {
+              key: "3-2",
+              label: "BC",
+              onClick: () => {
+                let arr = filterOption;
+                setFilterOptions({
+                  ...arr,
+                  caste: "bc",
+                });
+              },
+            },
+            {
+              key: "3-3",
+              label: "All",
+              onClick: () => {
+                let arr = filterOption;
+                setFilterOptions({
+                  ...arr,
+                  caste: "all",
+                });
+              },
+            },
+          ],
+        },
+      ]}
+    />
+  );
+
   return (
     <Form style={{ display: "flex", justifyContent: "space-evenly" }}>
       <Select
@@ -49,6 +180,7 @@ const StateHeader = ({ onSearchSubmit }) => {
               </Option>
             ))}
       </Select>
+
       <Tooltip
         title={
           selectedDistrict === "" || selectedState === ""
@@ -65,6 +197,9 @@ const StateHeader = ({ onSearchSubmit }) => {
           Search
         </Button>
       </Tooltip>
+      <Dropdown overlay={menu}>
+        <Button icon={<FilterOutlined />}></Button>
+      </Dropdown>
     </Form>
   );
 };

@@ -11,7 +11,6 @@ const NgoMap = ({ nogDetail }) => {
     placeName: "Please Select Camp",
   });
   useEffect(() => {
-    console.log(nogDetail);
     if (nogDetail && Object.keys(nogDetail).length > 0) {
       setLocation(nogDetail);
     }
