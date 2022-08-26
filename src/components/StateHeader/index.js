@@ -1,13 +1,25 @@
-import { Button, Dropdown, Form, Menu, Select, Tooltip } from "antd";
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Form,
+  Menu,
+  Select,
+  Tooltip,
+} from "antd";
 import React, { useState } from "react";
 import { detail } from "utils/stateData/data";
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 const { Option } = Select;
+
+const { RangePicker } = DatePicker;
 
 const StateHeader = ({ onSearchSubmit, setFilterOptions, filterOption }) => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedData, setSelectedDate] = useState([]);
 
   const menu = (
     <Menu
@@ -192,11 +204,20 @@ const StateHeader = ({ onSearchSubmit, setFilterOptions, filterOption }) => {
           disabled={selectedDistrict == ""}
           type="primary"
           icon={<SearchOutlined />}
-          onClick={() => onSearchSubmit(selectedState, selectedDistrict)}
+          onClick={() =>
+            onSearchSubmit(selectedState, selectedDistrict, selectedData)
+          }
         >
           Search
         </Button>
       </Tooltip>
+      <RangePicker
+        ranges={{
+          Today: [moment(), moment()],
+          "This Month": [moment().startOf("month"), moment().endOf("month")],
+        }}
+        onChange={(e) => setSelectedDate([e[0].format("x"), e[1].format("x")])}
+      />
       <Dropdown overlay={menu}>
         <Button icon={<FilterOutlined />}></Button>
       </Dropdown>

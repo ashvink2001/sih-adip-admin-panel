@@ -18,6 +18,8 @@ import VerifyById from "modules/dashboard/verifyById";
 import SupportChat from "modules/dashboard/supportChat";
 import Ngo from "modules/dashboard/ngo";
 import Admin from "modules/dashboard/admin";
+import MonitorAid from "components/MonitorAid";
+import MonitorAidIssued from "modules/dashboard/ManageAidReceived";
 
 const Panel = ({ signOutSuccess }) => {
   const { access } = useSelector((state) => state.auth);
@@ -47,6 +49,10 @@ const Panel = ({ signOutSuccess }) => {
       return <VerifyByPlace verificationType={"doctorVerification"} />;
     } else if (tab === "14") {
       return <VerifyById verificationType={"doctorVerification"} />;
+    } else if (tab === "15") {
+      return <MonitorAid />;
+    } else if (tab === "16") {
+      return <MonitorAidIssued />;
     } else {
       return <Home />;
     }

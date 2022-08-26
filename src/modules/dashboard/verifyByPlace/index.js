@@ -20,7 +20,7 @@ const VerifyByPlace = ({ verificationType }) => {
     filterSort(verifyList, filterOptions);
   }, [filterOptions]);
 
-  const onSearchSubmit = async (state, district) => {
+  const onSearchSubmit = async (state, district, dates) => {
     setLoadingData(true);
     var userIdList = [];
     await onValue(
@@ -67,7 +67,7 @@ const VerifyByPlace = ({ verificationType }) => {
             });
           });
           setVerifyList(arr);
-          filterSort(arr, filterOptions);
+          filterSort(arr, dates);
           setLoadingData(false);
         }
       );
@@ -76,31 +76,48 @@ const VerifyByPlace = ({ verificationType }) => {
     }
   };
 
-  const filterSort = (list) => {
+  const rangeSort = (start, end, check) => {
+    let timeStamp1 = parseInt(start);
+    let timeStamp2 = parseInt(end);
+    let timeStamp = check;
+    if (timeStamp > timeStamp1 && timeStamp < timeStamp2) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const filterSort = (data, dates) => {
     let filteredList = [];
-    list.map((list) => {
-      if (filterOptions.gender === "all") {
-        filteredList.push(list);
-      } else if (filterOptions.gender === "male" && list.gender === "Male") {
-        filteredList.push(list);
-      } else if (
-        filterOptions.gender === "female" &&
-        list.gender === "Female"
+    for (let list of data) {
+      if (
+        dates[0] &&
+        rangeSort(dates[0], dates[1], list.requestStatus.appliedOnTimeStamp)
       ) {
-        filteredList.push(list);
-      } else if (
-        filterOptions.caste === "sc/st/other" &&
-        (list.category === "SC" ||
-          ist.category === "ST" ||
-          list.category === "other")
-      ) {
-        filteredList.push(list);
-      } else if (filterOptions.caste === "BC" && list.category !== "BC") {
-        filteredList.push(list);
-      } else if (filterOptions.caste === "all") {
-        filteredList.push(list);
+        if (filterOptions.gender === "all") {
+          filteredList.push(list);
+        } else if (filterOptions.gender === "male" && list.gender === "Male") {
+          filteredList.push(list);
+        } else if (
+          filterOptions.gender === "female" &&
+          list.gender === "Female"
+        ) {
+          filteredList.push(list);
+        } else if (
+          filterOptions.caste === "sc/st/other" &&
+          (list.category === "SC" ||
+            ist.category === "ST" ||
+            list.category === "other")
+        ) {
+          filteredList.push(list);
+        } else if (filterOptions.caste === "BC" && list.category !== "BC") {
+          filteredList.push(list);
+        } else if (filterOptions.caste === "all") {
+          filteredList.push(list);
+        }
       }
-    });
+    }
+
     if (filterOptions.dob === "ascending") {
       list.sort(function (a, b) {
         return new Date(b.dateOfBirth) - new Date(a.dateOfBirth);
@@ -111,7 +128,6 @@ const VerifyByPlace = ({ verificationType }) => {
       });
     }
     setFilteredList([...filteredList]);
-    // return filteredList || [];
   };
 
   return (

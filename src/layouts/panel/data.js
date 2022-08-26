@@ -1,7 +1,7 @@
 import {
   HomeOutlined,
   FileSearchOutlined,
-  UserOutlined,
+  BarChartOutlined,
   DiffOutlined,
   PictureOutlined,
   WechatOutlined,
@@ -9,7 +9,7 @@ import {
   ControlOutlined,
   FilePdfOutlined,
   PlusCircleOutlined,
-  UserSwitchOutlined,
+  MonitorOutlined,
 } from "@ant-design/icons";
 
 function getItem(label, key, icon, children) {
@@ -44,6 +44,8 @@ export const navData = {
   supportChat: getItem("Support Chat", "6", <WechatOutlined />),
   ngo: getItem("Agency ", "7", <BankOutlined />),
   admin: getItem("Admin Control", "8", <ControlOutlined />),
+  monitorAids: getItem("Monitor Aids", "15", <MonitorOutlined />),
+  monitorIssue: getItem("Monitor Issue", "16", <BarChartOutlined />),
 };
 
 export const fetchAdminMenu = (access) => {
