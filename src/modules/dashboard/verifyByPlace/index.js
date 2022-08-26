@@ -89,10 +89,36 @@ const VerifyByPlace = ({ verificationType }) => {
   const filterSort = (data, dates) => {
     let filteredList = [];
     for (let list of data) {
-      if (
-        dates.length > 0 &&
-        rangeSort(dates[0], dates[1], list.requestStatus.appliedOnTimeStamp)
-      ) {
+      if (dates.length > 0) {
+        if (
+          rangeSort(dates[0], dates[1], list.requestStatus.appliedOnTimeStamp)
+        ) {
+          if (filterOptions.gender === "all") {
+            filteredList.push(list);
+          } else if (
+            filterOptions.gender === "male" &&
+            list.gender === "Male"
+          ) {
+            filteredList.push(list);
+          } else if (
+            filterOptions.gender === "female" &&
+            list.gender === "Female"
+          ) {
+            filteredList.push(list);
+          } else if (
+            filterOptions.caste === "sc/st/other" &&
+            (list.category === "SC" ||
+              ist.category === "ST" ||
+              list.category === "other")
+          ) {
+            filteredList.push(list);
+          } else if (filterOptions.caste === "BC" && list.category !== "BC") {
+            filteredList.push(list);
+          } else if (filterOptions.caste === "all") {
+            filteredList.push(list);
+          }
+        }
+      } else {
         if (filterOptions.gender === "all") {
           filteredList.push(list);
         } else if (filterOptions.gender === "male" && list.gender === "Male") {
